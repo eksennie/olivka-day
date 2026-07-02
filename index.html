@@ -3,164 +3,312 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Прогноз дня · Оливка</title>
+<title>Мой день · Оливка</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #0d0d1a;
-    color: #e8e0f0;
-    min-height: 100vh;
-    padding: 0 0 40px 0;
-  }
-  .header {
-    text-align: center;
-    padding: 28px 20px 16px;
-    background: linear-gradient(180deg, #1a0a2e 0%, #0d0d1a 100%);
-  }
-  .header-title {
-    font-size: 13px;
-    color: #9b8ec4;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .header-date {
-    font-size: 20px;
-    font-weight: 600;
-    color: #f0e6ff;
-  }
-  .header-sub {
-    font-size: 13px;
-    color: #7a6d9a;
-    margin-top: 4px;
-  }
-  .cards {
-    padding: 8px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .card {
-    border-radius: 18px;
-    padding: 18px 18px 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  }
-  .card-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-  }
-  .card-emoji {
-    font-size: 22px;
-    line-height: 1;
-  }
-  .card-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.95);
-    letter-spacing: 0.3px;
-  }
-  .card-body {
-    font-size: 14px;
-    line-height: 1.65;
-    color: rgba(255,255,255,0.85);
-  }
-  .card-body br { display: block; margin: 6px 0; content: ''; }
-  .card-body ul { padding-left: 18px; margin: 8px 0; }
-  .card-body li { margin-bottom: 7px; }
-  .aff {
-    background: rgba(255,255,255,0.08);
-    border-left: 3px solid rgba(255,215,100,0.6);
-    border-radius: 0 10px 10px 0;
-    padding: 12px 14px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    line-height: 1.55;
-    font-style: italic;
-    color: rgba(255,255,255,0.9);
-  }
-  .aff:last-child { margin-bottom: 0; }
-  .footer {
-    text-align: center;
-    padding: 20px 20px 0;
-    font-size: 11px;
-    color: #4a3f6b;
-    line-height: 1.6;
-  }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0d0d1a;
+  color: #e8e0f0;
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+.header {
+  text-align: center;
+  padding: 24px 20px 0;
+  background: linear-gradient(180deg, #1a0a2e 0%, #0d0d1a 100%);
+}
+.header-title { font-size: 12px; color: #9b8ec4; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
+.header-date { font-size: 19px; font-weight: 600; color: #f0e6ff; }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  margin: 18px 14px 0;
+  background: #1a1030;
+  border-radius: 14px;
+  padding: 4px;
+  gap: 4px;
+}
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 10px 6px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #7a6d9a;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab.active {
+  background: linear-gradient(135deg, #3a1a6a, #1a1050);
+  color: #f0e0ff;
+  box-shadow: 0 2px 10px rgba(100,50,200,0.3);
+}
+
+/* Tab content */
+.tab-content { display: none; padding: 12px 14px 0; }
+.tab-content.active { display: block; }
+
+/* Cards */
+.card {
+  border-radius: 18px;
+  padding: 16px 18px 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  margin-bottom: 12px;
+}
+.card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.card-emoji { font-size: 20px; line-height: 1; }
+.card-title { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.95); }
+.card-body { font-size: 13.5px; line-height: 1.65; color: rgba(255,255,255,0.82); }
+.card-body br { display: block; margin: 5px 0; content: ''; }
+.card-body ul { padding-left: 16px; margin: 6px 0; }
+.card-body li { margin-bottom: 6px; }
+
+/* Schedule events */
+.ev {
+  display: flex;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  align-items: baseline;
+}
+.ev:last-child { border-bottom: none; }
+.ev-time { font-size: 12px; color: #a090d0; min-width: 52px; font-weight: 600; flex-shrink: 0; }
+.ev-label { font-size: 13.5px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+
+/* Affirmations */
+.aff {
+  background: rgba(255,255,255,0.07);
+  border-left: 3px solid rgba(255,215,100,0.55);
+  border-radius: 0 10px 10px 0;
+  padding: 11px 13px;
+  margin-bottom: 9px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  font-style: italic;
+  color: rgba(255,255,255,0.88);
+}
+.aff:last-child { margin-bottom: 0; }
+
+/* Week view */
+.wday {
+  background: #141024;
+  border-radius: 14px;
+  padding: 13px 15px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.wday.week-today {
+  background: linear-gradient(135deg, #1e0d40, #0f1535);
+  border-color: rgba(160,100,255,0.3);
+}
+.wday-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.wday-name { font-size: 14px; font-weight: 700; color: #d0b8ff; }
+.wday.week-today .wday-name { color: #e8c8ff; }
+.wday-date { font-size: 12px; color: #6a5d8a; }
+.wday-title { font-size: 12px; color: #8a7aaa; font-style: italic; }
+.wday-events { display: flex; flex-wrap: wrap; gap: 5px; }
+.wev {
+  font-size: 12px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 4px 9px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.3;
+}
+.wday.week-today .wev { background: rgba(160,100,255,0.15); color: rgba(255,255,255,0.85); }
+
+.footer {
+  text-align: center;
+  padding: 18px 20px 0;
+  font-size: 11px;
+  color: #3a3055;
+  line-height: 1.6;
+}
 </style>
 </head>
 <body>
 <div class="header">
-  <div class="header-title">✦ прогноз дня ✦</div>
+  <div class="header-title">✦ мой день · оливка ✦</div>
   <div class="header-date">2 июля, четверг</div>
-  <div class="header-sub">от Оливки · специально для тебя</div>
 </div>
-<div class="cards">
 
-    <div class="card " style="background: linear-gradient(135deg, #1a1040, #0d1f4a);">
-      <div class="card-header"><span class="card-emoji">🌙</span><span class="card-title">Луна</span></div>
-      <div class="card-body">Луна убывает 🌖 и плывёт в Водолее — энергия системного взгляда, независимости и лёгкой отстранённости от суеты. Отличный фон, чтобы смотреть на вещи шире.
+<div class="tabs">
+  <div class="tab active" onclick="showTab('day')">📅 День</div>
+  <div class="tab" onclick="showTab('week')">🗓 Неделя</div>
+  <div class="tab" onclick="showTab('forecast')">🌙 Прогноз</div>
+</div>
+
+<!-- DAY TAB -->
+<div id="tab-day" class="tab-content active">
+  <div class="card" style="background: linear-gradient(135deg, #0f1f40, #0a1530);">
+    <div class="card-header"><span class="card-emoji">📅</span><span class="card-title">Расписание на сегодня</span></div>
+    <div class="card-body"><div class="ev"><span class="ev-time">07:30</span><span class="ev-label">подъём</span></div>
+<div class="ev"><span class="ev-time">08</span><span class="ev-label">ритуал</span></div>
+<div class="ev"><span class="ev-time">08:15–09:15</span><span class="ev-label">собаки</span></div>
+<div class="ev"><span class="ev-time">09:15–09:45</span><span class="ev-label">завтрак+сборы</span></div>
+<div class="ev"><span class="ev-time">10:30</span><span class="ev-label">выезд</span></div>
+<div class="ev"><span class="ev-time">11:30–13:30</span><span class="ev-label">обследование</span></div>
+<div class="ev"><span class="ev-time">15–16</span><span class="ev-label">проект</span></div>
+<div class="ev"><span class="ev-time">16–17</span><span class="ev-label">зал(если ок)</span></div>
+<div class="ev"><span class="ev-time">20</span><span class="ev-label">ужин</span></div>
+<div class="ev"><span class="ev-time">22:30–23:30</span><span class="ev-label">собаки.</span></div>
+</div>
+  </div>
+
+  <div class="card" style="background: linear-gradient(135deg, #1a1040, #0d1f4a);">
+    <div class="card-header"><span class="card-emoji">🌙</span><span class="card-title">Луна</span></div>
+    <div class="card-body">Луна убывает 🌖 и плывёт в Водолее — энергия системного взгляда, независимости и лёгкой отстранённости от суеты. Отличный фон, чтобы смотреть на вещи шире.
 <br>
 Весь день — 17-й лунный день 🔔 (Колокол). Радость, празднование, удовольствие — буквально лунное разрешение делать то, что откликается, а не только то, что «надо». Пусть сегодня будет немного торжества даже в обычных вещах.
 <br>
 С 23:42 начинается 18-й лунный день 🪞 (Зеркало) — это уже ночное время. Перед сном — честный взгляд внутрь, без самообмана и иллюзий.</div>
-    </div>
+  </div>
 
-    <div class="card " style="background: linear-gradient(135deg, #2a0d4a, #1a0d35);">
-      <div class="card-header"><span class="card-emoji">🔢</span><span class="card-title">Аркан дня</span></div>
-      <div class="card-body">Четвёрка — это внутренний стержень, порядок и ответственное лидерство. Сегодня ты как архитектор своей жизни: способность принимать взвешенные решения усилена, есть внутренняя собранность и самодостаточность.
+  <div class="card" style="background: linear-gradient(135deg, #1f1a3a, #140d2a);">
+    <div class="card-header"><span class="card-emoji">🎯</span><span class="card-title">Рекомендации</span></div>
+    <div class="card-body"><ul><li>Один структурный шаг по ключевому проекту — Меркурий трин Сатурн + Юпитер секстиль Марс создают идеальный коридор: думаем, выстраиваем, делаем.</li>
+<li>Коммуникации — взвешенно, без форсажа. Важные письма перечитывай.</li>
+<li>День с символом Колокола буквально просит что-то маленькое и приятное — кофе, музыка, прогулка. Это не отвлечение, это топливо.</li>
+<li>Вечером — лёгкий чек-ин: что прошло в потоке? Четвёрка любит, когда мы замечаем сделанное.</li></ul></div>
+  </div>
+
+  <div class="card" style="background: linear-gradient(135deg, #2a1040, #1a0a35);">
+    <div class="card-header"><span class="card-emoji">✨</span><span class="card-title">Аффирмации</span></div>
+    <div class="card-body"><div class="aff">✨ Я управляю своей жизнью из внутренней силы, а не из страха потерять контроль.</div><div class="aff">✨ Каждый мой шаг сегодня открывает возможность — я иду, и мир отвечает.</div><div class="aff">✨ Я позволяю себе радоваться прямо сейчас — это и есть мой путь к результату.</div></div>
+  </div>
+</div>
+
+<!-- WEEK TAB -->
+<div id="tab-week" class="tab-content">
+  <div class="wday">
+  <div class="wday-header">
+    <span class="wday-name">Понедельник</span>
+    <span class="wday-date">29.06</span> <span class="wday-title">· Упая</span>
+  </div>
+  <div class="wday-events"><span class="wev">08 подъём/нейропрог</span><span class="wev">08:30 ритуал</span><span class="wev">09–10 страт-сессия (Claude)</span><span class="wev">10–11 собаки</span><span class="wev">11:00 медитация</span><span class="wev">11:15–13 проект(агент подруге)</span><span class="wev">13–15 планирование/блог</span><span class="wev">15–16:30 [эфир(дашборд) ПЕРЕНЕСЁН на 30.06]</span><span class="wev">16:30–17 фортепиано</span><span class="wev">18–20 зал</span><span class="wev">22:30–23:30 собаки</span><span class="wev">без ужина.</span></div>
+</div>
+<div class="wday">
+  <div class="wday-header">
+    <span class="wday-name">Вторник</span>
+    <span class="wday-date">30.06</span> <span class="wday-title">· Элайнеры</span>
+  </div>
+  <div class="wday-events"><span class="wev">08 подъём</span><span class="wev">08:30 ритуал</span><span class="wev">10–11 собаки</span><span class="wev">11–11:30 завтрак+сборы</span><span class="wev">11:30 выезд</span><span class="wev">13:30–15:30 элайнеры</span><span class="wev">15:00 эфир(дашборд — перенос с пн, Катя НЕ будет)</span><span class="wev">16:20–17:20 урок фортепиано</span><span class="wev">18:30–20 работа с Claude</span><span class="wev">20 ужин</span><span class="wev">22:30–23:30 собаки.</span></div>
+</div>
+<div class="wday">
+  <div class="wday-header">
+    <span class="wday-name">Среда</span>
+    <span class="wday-date">01.07</span>
+  </div>
+  <div class="wday-events"><span class="wev">08 подъём</span><span class="wev">08:30 ритуал</span><span class="wev">09–10 страт-сессия</span><span class="wev">10–11 собаки</span><span class="wev">11–11:30 завтрак+медитация</span><span class="wev">12–13:30 психолог</span><span class="wev">13:30–15 проект</span><span class="wev">15–16:30 эфир(дашборд)</span><span class="wev">18 ужин</span><span class="wev">20–21:20 танцы(если зубы ок)</span><span class="wev">22:30–23:30 собаки.</span></div>
+</div>
+<div class="wday week-today">
+  <div class="wday-header">
+    <span class="wday-name">Четверг</span>
+    <span class="wday-date">02.07</span> <span class="wday-title">· Обследование (собаки раньше)</span>
+  </div>
+  <div class="wday-events"><span class="wev">07:30 подъём</span><span class="wev">08 ритуал</span><span class="wev">08:15–09:15 собаки</span><span class="wev">09:15–09:45 завтрак+сборы</span><span class="wev">10:30 выезд</span><span class="wev">11:30–13:30 обследование</span><span class="wev">15–16 проект</span><span class="wev">16–17 зал(если ок)</span><span class="wev">20 ужин</span><span class="wev">22:30–23:30 собаки.</span></div>
+</div>
+<div class="wday">
+  <div class="wday-header">
+    <span class="wday-name">Пятница</span>
+    <span class="wday-date">03.07</span>
+  </div>
+  <div class="wday-events"><span class="wev">08 подъём</span><span class="wev">08:30 ритуал</span><span class="wev">09–10 страт-сессия</span><span class="wev">10–11 собаки</span><span class="wev">11–11:30 завтрак+медитация</span><span class="wev">11:30–13 проект</span><span class="wev">13:30–15 инвестиции/курс</span><span class="wev">15–16:30 эфир(разбор с Олей)</span><span class="wev">16:30–17:30 фортепиано</span><span class="wev">18 ужин</span><span class="wev">20 танцы</span><span class="wev">22:30–23:30 собаки.</span></div>
+</div>
+<div class="wday">
+  <div class="wday-header">
+    <span class="wday-name">Суббота</span>
+    <span class="wday-date">04.07</span> <span class="wday-title">· Группа (собаки раньше)</span>
+  </div>
+  <div class="wday-events"><span class="wev">08 подъём</span><span class="wev">08:30 ритуал</span><span class="wev">09–10 собаки</span><span class="wev">10–10:45 завтрак+медитация</span><span class="wev">11–16 группа онлайн</span><span class="wev">16–17 отдых/зал</span><span class="wev">17–18 фортепиано</span><span class="wev">18–19 лёгкая работа</span><span class="wev">20 ужин</span><span class="wev">22:30–23:30 собаки.</span></div>
+</div>
+<div class="wday">
+  <div class="wday-header">
+    <span class="wday-name">Воскресенье</span>
+    <span class="wday-date">05.07</span> <span class="wday-title">· Выходной</span>
+  </div>
+  <div class="wday-events"><span class="wev">поспать</span><span class="wev">10–11 собаки</span><span class="wev">11 завтрак</span><span class="wev">отдых (фортепиано по желанию)</span><span class="wev">19 недельный обзор с Оливкой</span><span class="wev">20 ужин</span><span class="wev">22:30–23:30 собаки.  Напоминания шлёт движок schedule_reminders.py (по schedule.json). Утренний астропрогноз — отдельно в 08:00.</span></div>
+</div>
+
+</div>
+
+<!-- FORECAST TAB -->
+<div id="tab-forecast" class="tab-content">
+  <div class="card" style="background: linear-gradient(135deg, #1a1040, #0d1f4a);">
+    <div class="card-header"><span class="card-emoji">🌙</span><span class="card-title">Луна</span></div>
+    <div class="card-body">Луна убывает 🌖 и плывёт в Водолее — энергия системного взгляда, независимости и лёгкой отстранённости от суеты. Отличный фон, чтобы смотреть на вещи шире.
+<br>
+Весь день — 17-й лунный день 🔔 (Колокол). Радость, празднование, удовольствие — буквально лунное разрешение делать то, что откликается, а не только то, что «надо». Пусть сегодня будет немного торжества даже в обычных вещах.
+<br>
+С 23:42 начинается 18-й лунный день 🪞 (Зеркало) — это уже ночное время. Перед сном — честный взгляд внутрь, без самообмана и иллюзий.</div>
+  </div>
+  <div class="card" style="background: linear-gradient(135deg, #2a0d4a, #1a0d35);">
+    <div class="card-header"><span class="card-emoji">🔢</span><span class="card-title">Аркан дня</span></div>
+    <div class="card-body">Четвёрка — это внутренний стержень, порядок и ответственное лидерство. Сегодня ты как архитектор своей жизни: способность принимать взвешенные решения усилена, есть внутренняя собранность и самодостаточность.
 <br>
 Плюс Четвёрки — структуру видишь ясно, можешь расставить приоритеты без паники, ты сама себе опора.
 <br>
 Минус — риск засесть в контроле и напряжении. Сегодня важно управлять из любви, а не из страха. Учебник прямо говорит: «Идите к цели легко и без напряжения, учитесь радоваться малому» — это и есть задача Четвёрки в своём плюсе.
 <br>
 Коротко: строим, планируем, принимаем — и с лёгкостью ✨</div>
-    </div>
-
-    <div class="card " style="background: linear-gradient(135deg, #0d2240, #0a1a35);">
-      <div class="card-header"><span class="card-emoji">🪐</span><span class="card-title">Планеты</span></div>
-      <div class="card-body">Три транзита, которые работают прямо сейчас:
+  </div>
+  <div class="card" style="background: linear-gradient(135deg, #0d2240, #0a1a35);">
+    <div class="card-header"><span class="card-emoji">🪐</span><span class="card-title">Планеты</span></div>
+    <div class="card-body">Три транзита, которые работают прямо сейчас:
 <br>
 Юпитер секстиль натальный Марс (орб 0.33°) — главный подарок дня. Возможности открываются через действие. Куда ни шагнёшь — движение поддерживается. Не думай слишком долго, просто делай следующий шаг — Юпитер говорит «да».
 <br>
 Меркурий ℞ трин натальный Сатурн (орб 0.25°) — ретроградный Меркурий в трине к твоему Сатурну: идеально для ревизии планов, выстраивания структуры, глубокого обдумывания. Всё, что требует «сесть и разложить по полочкам» — сегодня ложится легко и чисто.
 <br>
 Солнце квадрат натальный Меркурий (орб 0.43°) — небольшая ловушка в коммуникациях. Важные переговоры и сообщения — без спешки, перечитывай перед отправкой. Лучше меньше, но точнее.</div>
-    </div>
-
-    <div class="card " style="background: linear-gradient(135deg, #1a2a1a, #0d1f30);">
-      <div class="card-header"><span class="card-emoji">💼</span><span class="card-title">Фокус по соляру</span></div>
-      <div class="card-body">Твой год — про то, чтобы завершить начатое и укоренить уже имеющееся. Не рассыпаться на новое, а довести до результата то, что есть. Наставничество, коучинг, работа с состоянием других — красная нить.
+  </div>
+  <div class="card" style="background: linear-gradient(135deg, #1a2a1a, #0d1f30);">
+    <div class="card-header"><span class="card-emoji">💼</span><span class="card-title">Фокус по соляру</span></div>
+    <div class="card-body">Твой год — про то, чтобы завершить начатое и укоренить уже имеющееся. Не рассыпаться на новое, а довести до результата то, что есть. Наставничество, коучинг, работа с состоянием других — красная нить.
 <br>
 Сегодня Четвёрка и 17-й лунный день создают редкий микс: структура + радость. Именно так и строится твой соляр — системно, но с удовольствием. Одно важное дело в потоке стоит больше десяти дел в напряжении.
 <br>
 И ещё деталь из соляра: баланс «помочь другим vs. позаботиться о себе» — постоянная тема. Сегодня — сначала ты.</div>
-    </div>
-
-    <div class="card " style="background: linear-gradient(135deg, #1f1a3a, #140d2a);">
-      <div class="card-header"><span class="card-emoji">🎯</span><span class="card-title">Рекомендации</span></div>
-      <div class="card-body"><ul><li>Один структурный шаг по ключевому проекту — Меркурий трин Сатурн + Юпитер секстиль Марс создают идеальный коридор: думаем, выстраиваем, делаем.</li>
+  </div>
+  <div class="card" style="background: linear-gradient(135deg, #1f1a3a, #140d2a);">
+    <div class="card-header"><span class="card-emoji">🎯</span><span class="card-title">Рекомендации</span></div>
+    <div class="card-body"><ul><li>Один структурный шаг по ключевому проекту — Меркурий трин Сатурн + Юпитер секстиль Марс создают идеальный коридор: думаем, выстраиваем, делаем.</li>
 <li>Коммуникации — взвешенно, без форсажа. Важные письма перечитывай.</li>
 <li>День с символом Колокола буквально просит что-то маленькое и приятное — кофе, музыка, прогулка. Это не отвлечение, это топливо.</li>
 <li>Вечером — лёгкий чек-ин: что прошло в потоке? Четвёрка любит, когда мы замечаем сделанное.</li></ul></div>
-    </div>
+  </div>
   <div class="card" style="background: linear-gradient(135deg, #2a1040, #1a0a35);">
     <div class="card-header"><span class="card-emoji">✨</span><span class="card-title">Аффирмации</span></div>
     <div class="card-body"><div class="aff">✨ Я управляю своей жизнью из внутренней силы, а не из страха потерять контроль.</div><div class="aff">✨ Каждый мой шаг сегодня открывает возможность — я иду, и мир отвечает.</div><div class="aff">✨ Я позволяю себе радоваться прямо сейчас — это и есть мой путь к результату.</div></div>
   </div>
 </div>
+
 <div class="footer">
   🔭 Астрологические расчёты: Мари Афонина · Клабс<br>
   Обновляется каждое утро автоматически
 </div>
+
 <script>
-  if (window.Telegram && window.Telegram.WebApp) {
-    Telegram.WebApp.ready();
-    Telegram.WebApp.expand();
-  }
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+if (window.Telegram && window.Telegram.WebApp) {
+  Telegram.WebApp.ready();
+  Telegram.WebApp.expand();
+}
 </script>
 </body>
 </html>
