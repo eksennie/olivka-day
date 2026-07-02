@@ -13,76 +13,121 @@ body {
   color: #e8e0f0;
   min-height: 100vh;
   padding-bottom: 40px;
+  overflow-x: hidden;
 }
 .header {
   text-align: center;
-  padding: 24px 20px 0;
+  padding: 22px 20px 0;
   background: linear-gradient(180deg, #1a0a2e 0%, #0d0d1a 100%);
 }
-.header-title { font-size: 12px; color: #9b8ec4; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; }
-.header-date { font-size: 19px; font-weight: 600; color: #f0e6ff; }
+.header-title { font-size: 11px; color: #9b8ec4; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 4px; }
+.header-date { font-size: 18px; font-weight: 600; color: #f0e6ff; }
 
 /* Tabs */
 .tabs {
   display: flex;
-  margin: 18px 14px 0;
-  background: #1a1030;
+  margin: 14px 12px 0;
+  background: #13102a;
   border-radius: 14px;
   padding: 4px;
-  gap: 4px;
+  gap: 3px;
 }
 .tab {
   flex: 1;
   text-align: center;
-  padding: 10px 6px;
+  padding: 9px 4px;
   border-radius: 10px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  color: #7a6d9a;
+  color: #6a5d8a;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.18s;
+  user-select: none;
 }
 .tab.active {
   background: linear-gradient(135deg, #3a1a6a, #1a1050);
   color: #f0e0ff;
-  box-shadow: 0 2px 10px rgba(100,50,200,0.3);
+  box-shadow: 0 2px 8px rgba(100,50,200,0.25);
 }
 
-/* Tab content */
-.tab-content { display: none; padding: 12px 14px 0; }
+.tab-content { display: none; padding: 14px 12px 0; }
 .tab-content.active { display: block; }
 
 /* Cards */
 .card {
   border-radius: 18px;
-  padding: 16px 18px 18px;
+  padding: 15px 16px 17px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  margin-bottom: 12px;
+  margin-bottom: 11px;
 }
-.card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.card-emoji { font-size: 20px; line-height: 1; }
-.card-title { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.95); }
+.card-hdr { display: flex; align-items: center; gap: 9px; margin-bottom: 11px; }
+.card-ico { font-size: 19px; line-height: 1; }
+.card-ttl { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.95); }
 .card-body { font-size: 13.5px; line-height: 1.65; color: rgba(255,255,255,0.82); }
 .card-body br { display: block; margin: 5px 0; content: ''; }
 .card-body ul { padding-left: 16px; margin: 6px 0; }
 .card-body li { margin-bottom: 6px; }
 
-/* Schedule events */
-.ev {
-  display: flex;
-  gap: 10px;
-  padding: 7px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  align-items: baseline;
+/* Calendar */
+.cal-wrap {
+  position: relative;
+  margin: 4px 0 0 48px;
 }
-.ev:last-child { border-bottom: none; }
-.ev-time { font-size: 12px; color: #a090d0; min-width: 52px; font-weight: 600; flex-shrink: 0; }
-.ev-label { font-size: 13.5px; color: rgba(255,255,255,0.85); line-height: 1.4; }
+.cal-hours { position: absolute; left: -48px; top: 0; width: 44px; }
+.cal-hour-line {
+  position: absolute;
+  left: 0; right: -100vw;
+  height: 1px;
+}
+.cal-hour-line::after {
+  content: '';
+  position: absolute;
+  left: 44px; right: -100vw;
+  top: 0;
+  height: 1px;
+  background: rgba(255,255,255,0.07);
+}
+.cal-hour-label {
+  position: absolute;
+  right: 4px;
+  top: -8px;
+  font-size: 10px;
+  color: #5a4d7a;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.cal-events { position: absolute; left: 0; right: 0; top: 0; }
+.cal-ev {
+  position: absolute;
+  left: 2px; right: 2px;
+  border-radius: 8px;
+  padding: 5px 8px;
+  border-left: 3px solid;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+}
+.cal-ev-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cal-ev-time {
+  font-size: 10.5px;
+  color: rgba(255,255,255,0.45);
+}
+.cal-ev-small .cal-ev-time { display: none; }
+.cal-ev-small .cal-ev-label { font-size: 11.5px; }
 
 /* Affirmations */
 .aff {
   background: rgba(255,255,255,0.07);
-  border-left: 3px solid rgba(255,215,100,0.55);
+  border-left: 3px solid rgba(255,215,100,0.5);
   border-radius: 0 10px 10px 0;
   padding: 11px 13px;
   margin-bottom: 9px;
@@ -93,45 +138,39 @@ body {
 }
 .aff:last-child { margin-bottom: 0; }
 
-/* Week view */
+/* Week */
 .wday {
-  background: #141024;
+  background: #111028;
   border-radius: 14px;
-  padding: 13px 15px;
-  margin-bottom: 10px;
+  padding: 12px 14px;
+  margin-bottom: 9px;
   border: 1px solid rgba(255,255,255,0.05);
 }
-.wday.week-today {
+.wday.wday-today {
   background: linear-gradient(135deg, #1e0d40, #0f1535);
   border-color: rgba(160,100,255,0.3);
 }
-.wday-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  flex-wrap: wrap;
-}
-.wday-name { font-size: 14px; font-weight: 700; color: #d0b8ff; }
-.wday.week-today .wday-name { color: #e8c8ff; }
-.wday-date { font-size: 12px; color: #6a5d8a; }
-.wday-title { font-size: 12px; color: #8a7aaa; font-style: italic; }
-.wday-events { display: flex; flex-wrap: wrap; gap: 5px; }
+.wday-hdr { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.wday-name { font-size: 14px; font-weight: 700; color: #c0a8f0; }
+.wday-today .wday-name { color: #e0c8ff; }
+.wday-date { font-size: 11.5px; color: #5a4d7a; }
+.wday-sub { font-size: 11.5px; color: #7a6d9a; font-style: italic; }
+.wday-evs { display: flex; flex-wrap: wrap; gap: 5px; }
 .wev {
-  font-size: 12px;
+  font-size: 11.5px;
   background: rgba(255,255,255,0.07);
   border-radius: 20px;
   padding: 4px 9px;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255,255,255,0.65);
   line-height: 1.3;
 }
-.wday.week-today .wev { background: rgba(160,100,255,0.15); color: rgba(255,255,255,0.85); }
+.wday-today .wev { background: rgba(140,80,255,0.15); color: rgba(255,255,255,0.82); }
 
 .footer {
   text-align: center;
-  padding: 18px 20px 0;
-  font-size: 11px;
-  color: #3a3055;
+  padding: 16px 20px 0;
+  font-size: 10.5px;
+  color: #332a55;
   line-height: 1.6;
 }
 </style>
@@ -143,101 +182,156 @@ body {
 </div>
 
 <div class="tabs">
-  <div class="tab active" onclick="showTab('day')">📅 День</div>
-  <div class="tab" onclick="showTab('week')">🗓 Неделя</div>
-  <div class="tab" onclick="showTab('forecast')">🌙 Прогноз</div>
+  <div class="tab active" onclick="showTab('day',this)">📅 День</div>
+  <div class="tab" onclick="showTab('week',this)">🗓 Неделя</div>
+  <div class="tab" onclick="showTab('forecast',this)">🌙 Прогноз</div>
 </div>
 
 <!-- DAY TAB -->
 <div id="tab-day" class="tab-content active">
-  <div class="card" style="background: linear-gradient(135deg, #0f1f40, #0a1530);">
-    <div class="card-header"><span class="card-emoji">📅</span><span class="card-title">Расписание на сегодня</span></div>
-    <div class="card-body"><div class="ev"><span class="ev-time">07:30</span><span class="ev-label">подъём</span></div>
-<div class="ev"><span class="ev-time">08</span><span class="ev-label">ритуал</span></div>
-<div class="ev"><span class="ev-time">08:15–09:15</span><span class="ev-label">собаки</span></div>
-<div class="ev"><span class="ev-time">09:15–09:45</span><span class="ev-label">завтрак+сборы</span></div>
-<div class="ev"><span class="ev-time">10:30</span><span class="ev-label">выезд</span></div>
-<div class="ev"><span class="ev-time">11:30–13:30</span><span class="ev-label">обследование</span></div>
-<div class="ev"><span class="ev-time">15–16</span><span class="ev-label">проект</span></div>
-<div class="ev"><span class="ev-time">16–17</span><span class="ev-label">зал(если ок)</span></div>
-<div class="ev"><span class="ev-time">20</span><span class="ev-label">ужин</span></div>
-<div class="ev"><span class="ev-time">22:30–23:30</span><span class="ev-label">собаки.</span></div>
+  <div class="card" style="background: linear-gradient(135deg, #0e1535, #0a1020);">
+    <div class="card-hdr"><span class="card-ico">📅</span><span class="card-ttl">Расписание на сегодня</span></div>
+    <div class="card-body"><div class="cal-wrap" style="height:1264px">
+  <div class="cal-hours"><div class="cal-hour-line" style="top:0.0px"><span class="cal-hour-label">07:00</span></div>
+<div class="cal-hour-line" style="top:72.0px"><span class="cal-hour-label">08:00</span></div>
+<div class="cal-hour-line" style="top:144.0px"><span class="cal-hour-label">09:00</span></div>
+<div class="cal-hour-line" style="top:216.0px"><span class="cal-hour-label">10:00</span></div>
+<div class="cal-hour-line" style="top:288.0px"><span class="cal-hour-label">11:00</span></div>
+<div class="cal-hour-line" style="top:360.0px"><span class="cal-hour-label">12:00</span></div>
+<div class="cal-hour-line" style="top:432.0px"><span class="cal-hour-label">13:00</span></div>
+<div class="cal-hour-line" style="top:504.0px"><span class="cal-hour-label">14:00</span></div>
+<div class="cal-hour-line" style="top:576.0px"><span class="cal-hour-label">15:00</span></div>
+<div class="cal-hour-line" style="top:648.0px"><span class="cal-hour-label">16:00</span></div>
+<div class="cal-hour-line" style="top:720.0px"><span class="cal-hour-label">17:00</span></div>
+<div class="cal-hour-line" style="top:792.0px"><span class="cal-hour-label">18:00</span></div>
+<div class="cal-hour-line" style="top:864.0px"><span class="cal-hour-label">19:00</span></div>
+<div class="cal-hour-line" style="top:936.0px"><span class="cal-hour-label">20:00</span></div>
+<div class="cal-hour-line" style="top:1008.0px"><span class="cal-hour-label">21:00</span></div>
+<div class="cal-hour-line" style="top:1080.0px"><span class="cal-hour-label">22:00</span></div>
+<div class="cal-hour-line" style="top:1152.0px"><span class="cal-hour-label">23:00</span></div>
+<div class="cal-hour-line" style="top:1224.0px"><span class="cal-hour-label">24:00</span></div>
 </div>
+  <div class="cal-events"><div class="cal-ev" style="top:36.0px;height:36.0px;background:#2a1a1e;border-left-color:#f06292">
+  <span class="cal-ev-label" style="color:#f06292">подъём</span>
+  <span class="cal-ev-time">07:30</span>
+</div>
+<div class="cal-ev cal-ev-small" style="top:72.0px;height:28.0px;background:#3a2a1e;border-left-color:#ffb74d">
+  <span class="cal-ev-label" style="color:#ffb74d">ритуал</span>
+  <span class="cal-ev-time">08:00</span>
+</div>
+<div class="cal-ev" style="top:90.0px;height:72.0px;background:#1e4a2a;border-left-color:#4caf7d">
+  <span class="cal-ev-label" style="color:#4caf7d">собаки</span>
+  <span class="cal-ev-time">08:15–09:15</span>
+</div>
+<div class="cal-ev" style="top:162.0px;height:36.0px;background:#1e3a1e;border-left-color:#81c784">
+  <span class="cal-ev-label" style="color:#81c784">завтрак+сборы</span>
+  <span class="cal-ev-time">09:15</span>
+</div>
+<div class="cal-ev" style="top:252.0px;height:72.0px;background:#3a3a1e;border-left-color:#fff176">
+  <span class="cal-ev-label" style="color:#fff176">выезд</span>
+  <span class="cal-ev-time">10:30–11:30</span>
+</div>
+<div class="cal-ev" style="top:324.0px;height:144.0px;background:#3a1e2a;border-left-color:#f48fb1">
+  <span class="cal-ev-label" style="color:#f48fb1">обследование</span>
+  <span class="cal-ev-time">11:30–13:30</span>
+</div>
+<div class="cal-ev" style="top:576.0px;height:72.0px;background:#1a1e4a;border-left-color:#7986cb">
+  <span class="cal-ev-label" style="color:#7986cb">проект</span>
+  <span class="cal-ev-time">15:00–16:00</span>
+</div>
+<div class="cal-ev" style="top:648.0px;height:72.0px;background:#4a1e1e;border-left-color:#e57373">
+  <span class="cal-ev-label" style="color:#e57373">зал(если ок)</span>
+  <span class="cal-ev-time">16:00–17:00</span>
+</div>
+<div class="cal-ev" style="top:936.0px;height:180.0px;background:#1e3a1e;border-left-color:#81c784">
+  <span class="cal-ev-label" style="color:#81c784">ужин</span>
+  <span class="cal-ev-time">20:00–22:30</span>
+</div>
+<div class="cal-ev" style="top:1116.0px;height:72.0px;background:#1e4a2a;border-left-color:#4caf7d">
+  <span class="cal-ev-label" style="color:#4caf7d">собаки.</span>
+  <span class="cal-ev-time">22:30–23:30</span>
+</div>
+</div>
+</div></div>
   </div>
-
   <div class="card" style="background: linear-gradient(135deg, #1a1040, #0d1f4a);">
-    <div class="card-header"><span class="card-emoji">🌙</span><span class="card-title">Луна</span></div>
+    <div class="card-hdr"><span class="card-ico">🌙</span><span class="card-ttl">Луна</span></div>
     <div class="card-body">Луна убывает 🌖 и плывёт в Водолее — энергия системного взгляда, независимости и лёгкой отстранённости от суеты. Отличный фон, чтобы смотреть на вещи шире.
 <br>
 Весь день — 17-й лунный день 🔔 (Колокол). Радость, празднование, удовольствие — буквально лунное разрешение делать то, что откликается, а не только то, что «надо». Пусть сегодня будет немного торжества даже в обычных вещах.
 <br>
 С 23:42 начинается 18-й лунный день 🪞 (Зеркало) — это уже ночное время. Перед сном — честный взгляд внутрь, без самообмана и иллюзий.</div>
   </div>
-
   <div class="card" style="background: linear-gradient(135deg, #1f1a3a, #140d2a);">
-    <div class="card-header"><span class="card-emoji">🎯</span><span class="card-title">Рекомендации</span></div>
+    <div class="card-hdr"><span class="card-ico">🎯</span><span class="card-ttl">Рекомендации</span></div>
     <div class="card-body"><ul><li>Один структурный шаг по ключевому проекту — Меркурий трин Сатурн + Юпитер секстиль Марс создают идеальный коридор: думаем, выстраиваем, делаем.</li>
 <li>Коммуникации — взвешенно, без форсажа. Важные письма перечитывай.</li>
 <li>День с символом Колокола буквально просит что-то маленькое и приятное — кофе, музыка, прогулка. Это не отвлечение, это топливо.</li>
 <li>Вечером — лёгкий чек-ин: что прошло в потоке? Четвёрка любит, когда мы замечаем сделанное.</li></ul></div>
   </div>
-
   <div class="card" style="background: linear-gradient(135deg, #2a1040, #1a0a35);">
-    <div class="card-header"><span class="card-emoji">✨</span><span class="card-title">Аффирмации</span></div>
+    <div class="card-hdr"><span class="card-ico">✨</span><span class="card-ttl">Аффирмации</span></div>
     <div class="card-body"><div class="aff">✨ Я управляю своей жизнью из внутренней силы, а не из страха потерять контроль.</div><div class="aff">✨ Каждый мой шаг сегодня открывает возможность — я иду, и мир отвечает.</div><div class="aff">✨ Я позволяю себе радоваться прямо сейчас — это и есть мой путь к результату.</div></div>
   </div>
 </div>
 
 <!-- WEEK TAB -->
 <div id="tab-week" class="tab-content">
-  <div class="wday">
-  <div class="wday-header">
+<div class="wday">
+  <div class="wday-hdr">
     <span class="wday-name">Понедельник</span>
-    <span class="wday-date">29.06</span> <span class="wday-title">· Упая</span>
+    <span class="wday-date">29.06</span>
+    <span class="wday-sub">Упая</span>
   </div>
-  <div class="wday-events"><span class="wev">08 подъём/нейропрог</span><span class="wev">08:30 ритуал</span><span class="wev">09–10 страт-сессия (Claude)</span><span class="wev">10–11 собаки</span><span class="wev">11:00 медитация</span><span class="wev">11:15–13 проект(агент подруге)</span><span class="wev">13–15 планирование/блог</span><span class="wev">15–16:30 [эфир(дашборд) ПЕРЕНЕСЁН на 30.06]</span><span class="wev">16:30–17 фортепиано</span><span class="wev">18–20 зал</span><span class="wev">22:30–23:30 собаки</span><span class="wev">без ужина.</span></div>
+  <div class="wday-evs"><div class="wev">08 подъём/нейропрог</div><div class="wev">08:30 ритуал</div><div class="wev">09–10 страт-сессия (Claude)</div><div class="wev">10–11 собаки</div><div class="wev">11:00 медитация</div><div class="wev">11:15–13 проект(агент подруге)</div><div class="wev">13–15 планирование/блог</div><div class="wev">15–16:30 [эфир(дашборд) ПЕРЕНЕСЁН на 30.06]</div><div class="wev">16:30–17 фортепиано</div><div class="wev">18–20 зал</div><div class="wev">22:30–23:30 собаки</div><div class="wev">без ужина.</div></div>
 </div>
 <div class="wday">
-  <div class="wday-header">
+  <div class="wday-hdr">
     <span class="wday-name">Вторник</span>
-    <span class="wday-date">30.06</span> <span class="wday-title">· Элайнеры</span>
+    <span class="wday-date">30.06</span>
+    <span class="wday-sub">Элайнеры</span>
   </div>
-  <div class="wday-events"><span class="wev">08 подъём</span><span class="wev">08:30 ритуал</span><span class="wev">10–11 собаки</span><span class="wev">11–11:30 завтрак+сборы</span><span class="wev">11:30 выезд</span><span class="wev">13:30–15:30 элайнеры</span><span class="wev">15:00 эфир(дашборд — перенос с пн, Катя НЕ будет)</span><span class="wev">16:20–17:20 урок фортепиано</span><span class="wev">18:30–20 работа с Claude</span><span class="wev">20 ужин</span><span class="wev">22:30–23:30 собаки.</span></div>
+  <div class="wday-evs"><div class="wev">08 подъём</div><div class="wev">08:30 ритуал</div><div class="wev">10–11 собаки</div><div class="wev">11–11:30 завтрак+сборы</div><div class="wev">11:30 выезд</div><div class="wev">13:30–15:30 элайнеры</div><div class="wev">15:00 эфир(дашборд — перенос с пн, Катя НЕ будет)</div><div class="wev">16:20–17:20 урок фортепиано</div><div class="wev">18:30–20 работа с Claude</div><div class="wev">20 ужин</div><div class="wev">22:30–23:30 собаки.</div></div>
 </div>
 <div class="wday">
-  <div class="wday-header">
+  <div class="wday-hdr">
     <span class="wday-name">Среда</span>
     <span class="wday-date">01.07</span>
+    
   </div>
-  <div class="wday-events"><span class="wev">08 подъём</span><span class="wev">08:30 ритуал</span><span class="wev">09–10 страт-сессия</span><span class="wev">10–11 собаки</span><span class="wev">11–11:30 завтрак+медитация</span><span class="wev">12–13:30 психолог</span><span class="wev">13:30–15 проект</span><span class="wev">15–16:30 эфир(дашборд)</span><span class="wev">18 ужин</span><span class="wev">20–21:20 танцы(если зубы ок)</span><span class="wev">22:30–23:30 собаки.</span></div>
+  <div class="wday-evs"><div class="wev">08 подъём</div><div class="wev">08:30 ритуал</div><div class="wev">09–10 страт-сессия</div><div class="wev">10–11 собаки</div><div class="wev">11–11:30 завтрак+медитация</div><div class="wev">12–13:30 психолог</div><div class="wev">13:30–15 проект</div><div class="wev">15–16:30 эфир(дашборд)</div><div class="wev">18 ужин</div><div class="wev">20–21:20 танцы(если зубы ок)</div><div class="wev">22:30–23:30 собаки.</div></div>
 </div>
-<div class="wday week-today">
-  <div class="wday-header">
+<div class="wday wday-today">
+  <div class="wday-hdr">
     <span class="wday-name">Четверг</span>
-    <span class="wday-date">02.07</span> <span class="wday-title">· Обследование (собаки раньше)</span>
+    <span class="wday-date">02.07</span>
+    <span class="wday-sub">Обследование (собаки раньше)</span>
   </div>
-  <div class="wday-events"><span class="wev">07:30 подъём</span><span class="wev">08 ритуал</span><span class="wev">08:15–09:15 собаки</span><span class="wev">09:15–09:45 завтрак+сборы</span><span class="wev">10:30 выезд</span><span class="wev">11:30–13:30 обследование</span><span class="wev">15–16 проект</span><span class="wev">16–17 зал(если ок)</span><span class="wev">20 ужин</span><span class="wev">22:30–23:30 собаки.</span></div>
+  <div class="wday-evs"><div class="wev">07:30 подъём</div><div class="wev">08 ритуал</div><div class="wev">08:15–09:15 собаки</div><div class="wev">09:15–09:45 завтрак+сборы</div><div class="wev">10:30 выезд</div><div class="wev">11:30–13:30 обследование</div><div class="wev">15–16 проект</div><div class="wev">16–17 зал(если ок)</div><div class="wev">20 ужин</div><div class="wev">22:30–23:30 собаки.</div></div>
 </div>
 <div class="wday">
-  <div class="wday-header">
+  <div class="wday-hdr">
     <span class="wday-name">Пятница</span>
     <span class="wday-date">03.07</span>
+    
   </div>
-  <div class="wday-events"><span class="wev">08 подъём</span><span class="wev">08:30 ритуал</span><span class="wev">09–10 страт-сессия</span><span class="wev">10–11 собаки</span><span class="wev">11–11:30 завтрак+медитация</span><span class="wev">11:30–13 проект</span><span class="wev">13:30–15 инвестиции/курс</span><span class="wev">15–16:30 эфир(разбор с Олей)</span><span class="wev">16:30–17:30 фортепиано</span><span class="wev">18 ужин</span><span class="wev">20 танцы</span><span class="wev">22:30–23:30 собаки.</span></div>
+  <div class="wday-evs"><div class="wev">08 подъём</div><div class="wev">08:30 ритуал</div><div class="wev">09–10 страт-сессия</div><div class="wev">10–11 собаки</div><div class="wev">11–11:30 завтрак+медитация</div><div class="wev">11:30–13 проект</div><div class="wev">13:30–15 инвестиции/курс</div><div class="wev">15–16:30 эфир(разбор с Олей)</div><div class="wev">16:30–17:30 фортепиано</div><div class="wev">18 ужин</div><div class="wev">20 танцы</div><div class="wev">22:30–23:30 собаки.</div></div>
 </div>
 <div class="wday">
-  <div class="wday-header">
+  <div class="wday-hdr">
     <span class="wday-name">Суббота</span>
-    <span class="wday-date">04.07</span> <span class="wday-title">· Группа (собаки раньше)</span>
+    <span class="wday-date">04.07</span>
+    <span class="wday-sub">Группа (собаки раньше)</span>
   </div>
-  <div class="wday-events"><span class="wev">08 подъём</span><span class="wev">08:30 ритуал</span><span class="wev">09–10 собаки</span><span class="wev">10–10:45 завтрак+медитация</span><span class="wev">11–16 группа онлайн</span><span class="wev">16–17 отдых/зал</span><span class="wev">17–18 фортепиано</span><span class="wev">18–19 лёгкая работа</span><span class="wev">20 ужин</span><span class="wev">22:30–23:30 собаки.</span></div>
+  <div class="wday-evs"><div class="wev">08 подъём</div><div class="wev">08:30 ритуал</div><div class="wev">09–10 собаки</div><div class="wev">10–10:45 завтрак+медитация</div><div class="wev">11–16 группа онлайн</div><div class="wev">16–17 отдых/зал</div><div class="wev">17–18 фортепиано</div><div class="wev">18–19 лёгкая работа</div><div class="wev">20 ужин</div><div class="wev">22:30–23:30 собаки.</div></div>
 </div>
 <div class="wday">
-  <div class="wday-header">
+  <div class="wday-hdr">
     <span class="wday-name">Воскресенье</span>
-    <span class="wday-date">05.07</span> <span class="wday-title">· Выходной</span>
+    <span class="wday-date">05.07</span>
+    <span class="wday-sub">Выходной</span>
   </div>
-  <div class="wday-events"><span class="wev">поспать</span><span class="wev">10–11 собаки</span><span class="wev">11 завтрак</span><span class="wev">отдых (фортепиано по желанию)</span><span class="wev">19 недельный обзор с Оливкой</span><span class="wev">20 ужин</span><span class="wev">22:30–23:30 собаки.  Напоминания шлёт движок schedule_reminders.py (по schedule.json). Утренний астропрогноз — отдельно в 08:00.</span></div>
+  <div class="wday-evs"><div class="wev">поспать</div><div class="wev">10–11 собаки</div><div class="wev">11 завтрак</div><div class="wev">отдых (фортепиано по желанию)</div><div class="wev">19 недельный обзор с Оливкой</div><div class="wev">20 ужин</div><div class="wev">22:30–23:30 собаки.  Напоминания шлёт движок schedule_reminders.py (по schedule.json). Утренний астропрогноз — отдельно в 08:00.</div></div>
 </div>
 
 </div>
@@ -245,7 +339,7 @@ body {
 <!-- FORECAST TAB -->
 <div id="tab-forecast" class="tab-content">
   <div class="card" style="background: linear-gradient(135deg, #1a1040, #0d1f4a);">
-    <div class="card-header"><span class="card-emoji">🌙</span><span class="card-title">Луна</span></div>
+    <div class="card-hdr"><span class="card-ico">🌙</span><span class="card-ttl">Луна</span></div>
     <div class="card-body">Луна убывает 🌖 и плывёт в Водолее — энергия системного взгляда, независимости и лёгкой отстранённости от суеты. Отличный фон, чтобы смотреть на вещи шире.
 <br>
 Весь день — 17-й лунный день 🔔 (Колокол). Радость, празднование, удовольствие — буквально лунное разрешение делать то, что откликается, а не только то, что «надо». Пусть сегодня будет немного торжества даже в обычных вещах.
@@ -253,7 +347,7 @@ body {
 С 23:42 начинается 18-й лунный день 🪞 (Зеркало) — это уже ночное время. Перед сном — честный взгляд внутрь, без самообмана и иллюзий.</div>
   </div>
   <div class="card" style="background: linear-gradient(135deg, #2a0d4a, #1a0d35);">
-    <div class="card-header"><span class="card-emoji">🔢</span><span class="card-title">Аркан дня</span></div>
+    <div class="card-hdr"><span class="card-ico">🔢</span><span class="card-ttl">Аркан дня</span></div>
     <div class="card-body">Четвёрка — это внутренний стержень, порядок и ответственное лидерство. Сегодня ты как архитектор своей жизни: способность принимать взвешенные решения усилена, есть внутренняя собранность и самодостаточность.
 <br>
 Плюс Четвёрки — структуру видишь ясно, можешь расставить приоритеты без паники, ты сама себе опора.
@@ -263,7 +357,7 @@ body {
 Коротко: строим, планируем, принимаем — и с лёгкостью ✨</div>
   </div>
   <div class="card" style="background: linear-gradient(135deg, #0d2240, #0a1a35);">
-    <div class="card-header"><span class="card-emoji">🪐</span><span class="card-title">Планеты</span></div>
+    <div class="card-hdr"><span class="card-ico">🪐</span><span class="card-ttl">Планеты</span></div>
     <div class="card-body">Три транзита, которые работают прямо сейчас:
 <br>
 Юпитер секстиль натальный Марс (орб 0.33°) — главный подарок дня. Возможности открываются через действие. Куда ни шагнёшь — движение поддерживается. Не думай слишком долго, просто делай следующий шаг — Юпитер говорит «да».
@@ -273,7 +367,7 @@ body {
 Солнце квадрат натальный Меркурий (орб 0.43°) — небольшая ловушка в коммуникациях. Важные переговоры и сообщения — без спешки, перечитывай перед отправкой. Лучше меньше, но точнее.</div>
   </div>
   <div class="card" style="background: linear-gradient(135deg, #1a2a1a, #0d1f30);">
-    <div class="card-header"><span class="card-emoji">💼</span><span class="card-title">Фокус по соляру</span></div>
+    <div class="card-hdr"><span class="card-ico">💼</span><span class="card-ttl">Фокус по соляру</span></div>
     <div class="card-body">Твой год — про то, чтобы завершить начатое и укоренить уже имеющееся. Не рассыпаться на новое, а довести до результата то, что есть. Наставничество, коучинг, работа с состоянием других — красная нить.
 <br>
 Сегодня Четвёрка и 17-й лунный день создают редкий микс: структура + радость. Именно так и строится твой соляр — системно, но с удовольствием. Одно важное дело в потоке стоит больше десяти дел в напряжении.
@@ -281,14 +375,14 @@ body {
 И ещё деталь из соляра: баланс «помочь другим vs. позаботиться о себе» — постоянная тема. Сегодня — сначала ты.</div>
   </div>
   <div class="card" style="background: linear-gradient(135deg, #1f1a3a, #140d2a);">
-    <div class="card-header"><span class="card-emoji">🎯</span><span class="card-title">Рекомендации</span></div>
+    <div class="card-hdr"><span class="card-ico">🎯</span><span class="card-ttl">Рекомендации</span></div>
     <div class="card-body"><ul><li>Один структурный шаг по ключевому проекту — Меркурий трин Сатурн + Юпитер секстиль Марс создают идеальный коридор: думаем, выстраиваем, делаем.</li>
 <li>Коммуникации — взвешенно, без форсажа. Важные письма перечитывай.</li>
 <li>День с символом Колокола буквально просит что-то маленькое и приятное — кофе, музыка, прогулка. Это не отвлечение, это топливо.</li>
 <li>Вечером — лёгкий чек-ин: что прошло в потоке? Четвёрка любит, когда мы замечаем сделанное.</li></ul></div>
   </div>
   <div class="card" style="background: linear-gradient(135deg, #2a1040, #1a0a35);">
-    <div class="card-header"><span class="card-emoji">✨</span><span class="card-title">Аффирмации</span></div>
+    <div class="card-hdr"><span class="card-ico">✨</span><span class="card-ttl">Аффирмации</span></div>
     <div class="card-body"><div class="aff">✨ Я управляю своей жизнью из внутренней силы, а не из страха потерять контроль.</div><div class="aff">✨ Каждый мой шаг сегодня открывает возможность — я иду, и мир отвечает.</div><div class="aff">✨ Я позволяю себе радоваться прямо сейчас — это и есть мой путь к результату.</div></div>
   </div>
 </div>
@@ -299,11 +393,11 @@ body {
 </div>
 
 <script>
-function showTab(name) {
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+function showTab(name, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
-  event.target.classList.add('active');
+  el.classList.add('active');
 }
 if (window.Telegram && window.Telegram.WebApp) {
   Telegram.WebApp.ready();
