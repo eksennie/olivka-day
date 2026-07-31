@@ -1,223 +1,274 @@
-<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Tenor+Sans&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap&subset=cyrillic,latin" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Мой день · Оливка</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-@font-face{font-family:'Kalissa';src:url('fonts/Kalissa.otf') format('opentype');}
-:root{--gold:#DAB65E;--lav:#C69FD5;--lem:#FDFDC9;--card:#221A2B}
-*{box-sizing:border-box}body{margin:0;font-family:'Inter',sans-serif;background:#2b2333;padding:22px}
-.ph{max-width:390px;margin:0 auto;background:#17121C;border-radius:28px;padding:24px 18px 28px}
-.tag{font-family:'Tenor Sans';font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);opacity:.9}
-h1{font-family:'Playfair Display';font-style:italic;font-weight:600;font-size:42px;line-height:.95;margin:6px 0 2px;color:var(--lem);text-shadow:0 0 24px rgba(218,182,94,.3)}
-.hi{font-family:'Kalissa';font-weight:400;font-size:16px;color:var(--gold);opacity:.85;letter-spacing:.6px}
-.sec{font-family:'Tenor Sans';font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--lav);opacity:.85;margin:24px 2px 11px;display:flex;align-items:center;gap:8px}
-.sec::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(218,182,94,.4),transparent)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tile{background:var(--card);border-radius:16px;padding:14px 13px;border:1px solid rgba(218,182,94,.2)}
-.tl{font-family:'Tenor Sans';font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--lav);opacity:.75;margin-bottom:11px}
-.dots{display:flex;gap:7px}.dots i{width:17px;height:17px;border-radius:50%;border:1.6px solid var(--lav)}.dots i.on{background:var(--lav);box-shadow:0 0 9px rgba(198,159,213,.5)}
-.moods{display:flex;justify-content:space-between;gap:2px}
-.m{background:none;border:none;padding:0;color:var(--lav);opacity:.4}.m.on{opacity:1;color:var(--lem);transform:scale(1.13)}
-.f{width:28px;height:28px;display:block}
-.f .o{fill:none;stroke:currentColor;stroke-width:1.6}
-.f .ft{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-.f .ft circle{fill:currentColor;stroke:none}.f .st{fill:currentColor;stroke:none}
-.m.on .f{filter:drop-shadow(0 0 5px rgba(253,253,201,.55))}
-.mcap{font-family:'Tenor Sans';font-size:9px;letter-spacing:.5px;text-transform:uppercase;color:var(--lem);text-align:center;margin-top:9px}
-.plaque{margin-top:12px;background:linear-gradient(160deg,#2A2038,#241B33);border-radius:16px;padding:16px 17px;border:1px solid rgba(218,182,94,.28)}
-.plaque .pl{font-family:'Tenor Sans';font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);opacity:.9}
-.quote{border-left:2px solid rgba(218,182,94,.55);padding-left:13px;margin:9px 0 6px}
-.quote .q{font-family:'Kalissa';font-weight:400;font-size:24px;color:var(--lem);opacity:.9}
-.plaque .ps{font-size:13px;color:var(--lav);opacity:.82}
-.card{background:var(--card);border-radius:18px;padding:16px 17px;border:1px solid rgba(218,182,94,.18)}
-.day{display:flex;align-items:baseline;gap:9px;margin:26px 0 10px}.day .wd{font-family:'Tenor Sans';font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold)}.day .dd{font-family:'Tenor Sans';font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--lav);opacity:.5}
-.day.first{margin-top:2px}
-.prow{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(198,159,213,.1)}
-.prow:last-child{border:none}
-.ev{font-size:13.5px;color:#EAE3D8}
-.tm{font-family:'Tenor Sans';font-size:11px;letter-spacing:.5px;color:var(--gold);opacity:.9;flex:none;margin-left:14px}
-.frow{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:11px 0;border-bottom:1px solid rgba(198,159,213,.1)}
-.frow:last-child{border:none}
-.frow .txt{display:flex;gap:10px;font-size:14px;color:#EAE3D8;line-height:1.4}
-.frow .txt::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:6px;flex:none}
-.dl{font-family:'Tenor Sans';font-size:10px;letter-spacing:.5px;color:var(--gold);border:1px solid rgba(218,182,94,.45);border-radius:12px;padding:4px 10px;white-space:nowrap;flex:none;align-self:center}
-.mrow{display:flex;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid rgba(198,159,213,.08);position:relative}
-.mrow:last-child{border:none}
-.mk{width:6px;height:6px;border-radius:50%;background:var(--lav);opacity:.5;flex:none;position:relative;top:6px}
-.mrow.hot{border:1px solid rgba(218,182,94,.32);border-radius:13px;padding:13px 15px;margin:7px 0;background:rgba(218,182,94,.04)}
-.mtxt{font-size:14px;color:#EAE3D8;line-height:1.45;flex:1}
-.mrow.done{opacity:.42}
-.mrow.done .mtxt{color:var(--lav)}
-.mrow.done .mk{opacity:0}
-.mrow.done::before{content:"✓";position:absolute;left:-1px;top:10px;font-size:11px;color:var(--gold);opacity:.75}
-.gone{font-family:'Tenor Sans';font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);opacity:.55;flex:none;align-self:center}
-.steps{font-family:'Playfair Display';font-weight:600;font-size:19px;color:var(--lem);margin-left:auto;flex:none;text-shadow:0 0 12px rgba(253,253,201,.2)}
-.steps small{font-family:'Tenor Sans';font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--lav);opacity:.7;margin-left:5px}
-.batt{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
-.chk{display:flex;align-items:center;gap:10px;background:rgba(253,253,201,.07);border:1px solid rgba(253,253,201,.16);border-radius:14px;padding:11px 12px;cursor:pointer;transition:.2s;user-select:none}
-.chk .box{width:22px;height:22px;border-radius:7px;border:1.8px solid var(--lav);flex:none;display:flex;align-items:center;justify-content:center;color:transparent;font-size:13px;font-weight:700}
-.chk .ic{width:17px;height:17px;flex:none;color:var(--lav);opacity:.85}
-.chk .lb{font-size:13.5px;color:var(--lem)}
-.chk.on{background:transparent;border-color:rgba(198,159,213,.14)}
-.chk.on .box{background:var(--lav);border-color:var(--lav);color:#17121C}
-.chk.on .ic{opacity:.4}
-.chk.on .lb{color:var(--lav);opacity:.5}
-.jar{background:linear-gradient(165deg,#251C34,#1F1729)}
-.jar .jrow{display:flex;align-items:baseline;gap:13px;padding:11px 0;border-bottom:1px solid rgba(198,159,213,.07)}
-.jar .jrow:last-child{border:none}
-.jm{flex:none;font-size:11px;line-height:1;color:var(--gold);opacity:.65;position:relative;top:1px}
-.jtx{font-size:14px;color:#EAE3D8;line-height:1.45;flex:1}
-.ins .jtx{font-family:'Inter';font-style:italic;color:var(--lem);opacity:.88}
-.plaque .pl{display:flex;align-items:center}
-.plaque .by{margin-left:auto;font-family:'Tenor Sans';font-size:8.5px;letter-spacing:.5px;text-transform:none;color:var(--lav);opacity:.65;background:rgba(198,159,213,.1);padding:3px 9px;border-radius:9px}
-.affs{padding:20px}
-.affs .aff{font-family:'Inter';font-style:italic;font-weight:400;font-size:14.5px;line-height:1.6;color:var(--lem);opacity:.85;text-align:left;margin:16px 0}
-.affs .aff:first-child{margin-top:2px}
-.affs .aff:last-child{margin-bottom:2px}
-.srow{display:flex;align-items:center;padding:13px 2px}
-.srow+.srow{border-top:1px solid rgba(198,159,213,.13)}
-.sl{font-family:'Tenor Sans';font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--lav);opacity:.6;flex:none;min-width:122px}
-.sv{font-family:'Inter';font-weight:400;font-size:14.5px;color:var(--lem);display:flex;align-items:center;gap:8px}
-.moon{width:15px;height:15px;flex:none}
-.counters{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.ctr{background:var(--card);border:1px solid rgba(218,182,94,.18);border-radius:18px;padding:17px 12px 15px;text-align:center}
-.ring{position:relative;width:96px;height:96px;margin:0 auto}
-.ring svg{width:96px;height:96px}
-.ring .trk{fill:none;stroke:rgba(198,159,213,.15);stroke-width:7}
-.ring .prg{fill:none;stroke:var(--gold);stroke-width:7;stroke-linecap:round}
-.rc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.rn{font-family:'Playfair Display';font-size:29px;font-weight:600;color:var(--lem);line-height:1;text-shadow:0 0 14px rgba(253,253,201,.25)}
-.ru{font-family:'Tenor Sans';font-size:8px;letter-spacing:.3px;text-transform:uppercase;color:var(--lav);opacity:.7;margin-top:3px}
-.rlab{font-size:12.5px;color:#EAE3D8;margin-top:12px}
-.rlab .rt{font-family:'Tenor Sans';font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);opacity:.8;display:block;margin-top:4px}
-</style></head><body>
-<div class="ph">
-  <div class="tag">Понедельник · 28 июля</div>
-  <h1>Магия дня</h1><div class="hi">бережно ведёт Оливка</div>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0d0d1a;color:#e8e0f0;min-height:100vh;padding-bottom:40px;overflow-x:hidden}
 
-  <div class="sec">Твоё сегодня</div>
-  <div class="row">
-    <div class="tile"><div class="tl">Энергия</div><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div></div>
-    <div class="tile"><div class="tl">Настроение</div><div class="moods" id="moods"></div><div class="mcap" id="mcap"></div></div>
+.header{text-align:center;padding:20px 20px 0;background:linear-gradient(180deg,#1a0a2e 0%,#0d0d1a 100%)}
+.header-title{font-size:11px;color:#9b8ec4;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:4px}
+.header-date{font-size:18px;font-weight:600;color:#f0e6ff;margin-bottom:3px}
+.header-sub{font-size:11px;color:#6a5d8a;padding-bottom:14px}
+
+.tabs{display:flex;margin:14px 12px 0;background:#13102a;border-radius:14px;padding:4px;gap:3px}
+.tab{flex:1;text-align:center;padding:9px 4px;border-radius:10px;font-size:12px;font-weight:600;color:#6a5d8a;cursor:pointer;transition:all .18s;user-select:none}
+.tab.active{background:linear-gradient(135deg,#3a1a6a,#1a1050);color:#f0e0ff;box-shadow:0 2px 8px rgba(100,50,200,.25)}
+
+.tab-content{display:none;padding:14px 12px 0}
+.tab-content.active{display:block}
+
+.card{border-radius:18px;padding:15px 16px 17px;box-shadow:0 4px 20px rgba(0,0,0,.4);margin-bottom:11px}
+.card-hdr{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+.card-ico{font-size:19px;line-height:1}
+.card-ttl{font-size:14px;font-weight:700;color:rgba(255,255,255,.95)}
+.card-body{font-size:13.5px;line-height:1.65;color:rgba(255,255,255,.82)}
+.card-body p{margin-bottom:10px}
+.card-body p:last-child{margin-bottom:0}
+.card-body ul{padding-left:16px;margin:4px 0 0}
+.card-body li{margin-bottom:6px}
+
+/* ── Day Calendar ── */
+.cal-outer{display:flex;gap:0}
+.cal-times{position:relative;width:32px;flex-shrink:0}
+.cal-lbl{position:absolute;right:5px;font-size:10px;color:#7060a0;font-weight:500;line-height:1;transform:translateY(-50%)}
+.cal-body{position:relative;flex:1;border-left:1px solid rgba(255,255,255,.1)}
+.cal-sep{position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,.07)}
+.cal-ev{position:absolute;border-radius:6px;padding:3px 6px;border-left:3px solid;overflow:hidden;display:flex;align-items:center;box-sizing:border-box}
+.cal-ev-lbl{font-size:11.5px;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+.cal-ev-sm .cal-ev-lbl{font-size:10px}
+
+/* ── Week Calendar ── */
+.wday{background:#111028;border-radius:14px;padding:11px 13px;margin-bottom:9px;border:1px solid rgba(255,255,255,.05)}
+.wday.wday-today{background:linear-gradient(135deg,#1e0d40,#0f1535);border-color:rgba(160,100,255,.3)}
+.wday-hdr{display:flex;align-items:baseline;gap:7px;margin-bottom:8px;flex-wrap:wrap}
+.wday-name{font-size:14px;font-weight:700;color:#c0a8f0}
+.wday-today .wday-name{color:#e0c8ff}
+.wday-date{font-size:11px;color:#5a4d7a}
+.wday-sub{font-size:11px;color:#7a6d9a;font-style:italic}
+.wbar-wrap{position:relative;height:12px;background:rgba(255,255,255,.06);border-radius:6px;margin-bottom:8px;overflow:hidden}
+.wseg{position:absolute;top:0;height:100%;border-radius:3px;opacity:.85}
+.wtick{position:absolute;top:0;height:100%;border-left:1px solid rgba(255,255,255,.12);display:flex;align-items:flex-end}
+.wtick span{font-size:7px;color:rgba(255,255,255,.25);padding-left:2px;line-height:1}
+.wchips{display:flex;flex-wrap:wrap;gap:4px}
+.wchip{font-size:10.5px;border:1px solid;border-radius:20px;padding:3px 8px;line-height:1.3;opacity:.85}
+
+/* ── Affirmations ── */
+.aff{background:rgba(255,255,255,.07);border-left:3px solid rgba(255,215,100,.5);border-radius:0 10px 10px 0;padding:11px 13px;margin-bottom:9px;font-size:13.5px;line-height:1.55;font-style:italic;color:rgba(255,255,255,.88)}
+.aff:last-child{margin-bottom:0}
+
+.footer{text-align:center;padding:16px 20px 0;font-size:10.5px;color:#2a2244;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-date">31 июля, пятница</div>
+  <div class="header-sub">бережно ведёт Оливка 🫧</div>
+</div>
+
+<div class="tabs">
+  <div class="tab active"  onclick="showTab('day',this)">📅 День</div>
+  <div class="tab"         onclick="showTab('week',this)">🗓 Неделя</div>
+  <div class="tab"         onclick="showTab('forecast',this)">🌙 Прогноз</div>
+</div>
+
+<!-- DAY -->
+<div id="tab-day" class="tab-content active">
+  <div class="card" style="background:linear-gradient(135deg,#0e1535,#090f20)">
+    <div class="card-hdr"><span class="card-ico">📅</span><span class="card-ttl">Расписание на сегодня</span></div>
+    <div class="card-body"><div class="cal-outer"><div class="cal-times" style="height:1326px"><div class="cal-lbl" style="top:0px">07</div>
+<div class="cal-lbl" style="top:78px">08</div>
+<div class="cal-lbl" style="top:156px">09</div>
+<div class="cal-lbl" style="top:234px">10</div>
+<div class="cal-lbl" style="top:312px">11</div>
+<div class="cal-lbl" style="top:390px">12</div>
+<div class="cal-lbl" style="top:468px">13</div>
+<div class="cal-lbl" style="top:546px">14</div>
+<div class="cal-lbl" style="top:624px">15</div>
+<div class="cal-lbl" style="top:702px">16</div>
+<div class="cal-lbl" style="top:780px">17</div>
+<div class="cal-lbl" style="top:858px">18</div>
+<div class="cal-lbl" style="top:936px">19</div>
+<div class="cal-lbl" style="top:1014px">20</div>
+<div class="cal-lbl" style="top:1092px">21</div>
+<div class="cal-lbl" style="top:1170px">22</div>
+<div class="cal-lbl" style="top:1248px">23</div>
+</div><div class="cal-body" style="height:1326px"><div class="cal-sep" style="top:0px"></div>
+<div class="cal-sep" style="top:78px"></div>
+<div class="cal-sep" style="top:156px"></div>
+<div class="cal-sep" style="top:234px"></div>
+<div class="cal-sep" style="top:312px"></div>
+<div class="cal-sep" style="top:390px"></div>
+<div class="cal-sep" style="top:468px"></div>
+<div class="cal-sep" style="top:546px"></div>
+<div class="cal-sep" style="top:624px"></div>
+<div class="cal-sep" style="top:702px"></div>
+<div class="cal-sep" style="top:780px"></div>
+<div class="cal-sep" style="top:858px"></div>
+<div class="cal-sep" style="top:936px"></div>
+<div class="cal-sep" style="top:1014px"></div>
+<div class="cal-sep" style="top:1092px"></div>
+<div class="cal-sep" style="top:1170px"></div>
+<div class="cal-sep" style="top:1248px"></div>
+<div class="cal-ev" style="top:390.0px;height:39.0px;left:0.0%;width:100.0%;background:#181820;border-left-color:#9090b0"><span class="cal-ev-lbl" style="color:#9090b0">ВЫПИСКА, домой. Работа — возможно, только по самочувствию (скорее нет). Дом, отдых, восстановление.</span></div>
+</div></div></div>
   </div>
-  <div class="plaque"><div class="pl">Тон дня по звёздам</div><div class="quote"><span class="q">Мягкий день</span></div><div class="ps">беречь силы, без нажима</div></div>
-
-  <div class="sec">Аффирмации дня</div>
-  <div class="card affs">
-    <div class="aff">Я доверяю своему ритму и позволяю дню разворачиваться мягко</div>
-    <div class="aff">Мне не нужно спешить, чтобы быть на своём пути</div>
-    <div class="aff">Я бережна к себе — и в этом моя сила</div>
+  <div class="card" style="background:linear-gradient(135deg,#1a1040,#0d1f4a)">
+    <div class="card-hdr"><span class="card-ico">🌙</span><span class="card-ttl">Луна</span></div>
+    <div class="card-body"><p>Сегодня Полнолуние 🌕 в Водолее — пик, кульминация, когда всё внутри звучит громче обычного.<br>Лунный день по времени:<br><ul><li>до 21:55 — 17-й лунный день, Колокол 🔔. День радости, праздника, удовольствия — прямо разрешение себе на лёгкость и красоту.</li><li>с 21:55 — 18-й лунный день, Зеркало 🪞. Вечер про честность с собой, разоблачение иллюзий — хорошо к ночи задать себе тихий искренний вопрос.</li></ul></p></div>
   </div>
-
-  <div class="sec">Якоря недели</div>
-  <div class="card">
-    <div class="day first"><span class="wd">Пн</span><span class="dd">28 июля</span></div>
-    <div class="prow"><span class="ev">Эфир ЛАБС — ответы на вопросы</span><span class="tm">15:00</span></div>
-    <div class="prow"><span class="ev">Психолог</span><span class="tm">18:00</span></div>
-    <div class="day"><span class="wd">Ср</span><span class="dd">30 июля</span></div>
-    <div class="prow"><span class="ev">Фортепиано</span><span class="tm">12:00</span></div>
-    <div class="day"><span class="wd">Пт</span><span class="dd">1 августа</span></div>
-    <div class="prow"><span class="ev">Эфир ЛАБС — защита работ</span><span class="tm">15:00</span></div>
-    <div class="prow"><span class="ev">Танцы</span><span class="tm">19:00</span></div>
+  <div class="card" style="background:linear-gradient(135deg,#1f1a3a,#140d2a)">
+    <div class="card-hdr"><span class="card-ico">🎯</span><span class="card-ttl">Рекомендации</span></div>
+    <div class="card-body"><p><ul><li>Сегодня — день удовольствия по-настоящему, а не по остаточному принципу. Впиши в него что-то, от чего сердце теплеет: красивый кофе, музыку, прогулку с Честером и Оливией без спешки.</li><li>Работу бери ту, что зажигает — Венера и аркан 6 дают творческому потоку зелёный свет. Пусть дело будет играючи.</li><li>Тело и красота в фокусе сезона: что-то приятное для себя — ванна, уход, вкусная еда — сегодня это не баловство, а по адресу.</li><li>К вечеру, с приходом Зеркала, задай себе тихий честный вопрос: что из сегодняшнего было по-настоящему моим? Без оценок, просто послушай отклик.</li></ul></p></div>
   </div>
-
-  <div class="sec">Фокус недели</div>
-  <div class="card">
-    <div class="frow"><span class="txt">Досдать мини-апп к защите ЛАБС</span><span class="dl">до 31.07</span></div>
-    <div class="frow"><span class="txt">Держать ритм: отбой до 00, движение</span></div>
-    <div class="frow"><span class="txt">Не проваливаться в изоляцию — быть на связи</span></div>
-  </div>
-
-  <div class="sec">Мастерская</div>
-  <div class="card">
-    <div class="mrow hot"><span class="mtxt">Мини-апп «Магия дня» — довести до защиты</span></div>
-    <div class="mrow hot"><span class="mtxt">Презентация проекта на защиту ЛАБС</span></div>
-    <div class="mrow"><i class="mk"></i><span class="mtxt">Портрет Даши — доделать</span></div>
-    <div class="mrow"><i class="mk"></i><span class="mtxt">Починить лунное время в движке</span></div>
-    <div class="mrow"><i class="mk"></i><span class="mtxt">Провести стратегическую сессию</span></div>
-    <div class="mrow done"><i class="mk"></i><span class="mtxt">Полный психологический портрет — собран</span><span class="gone">готово</span></div>
-  </div>
-
-  <div class="sec">Состояние</div>
-  <div class="card">
-    <div class="srow"><span class="sl">Самочувствие</span><span class="sv">лёгкая усталость</span></div>
-    <div class="srow"><span class="sl">Фаза цикла</span><span class="sv"><svg class="moon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.6" fill="none" stroke="var(--lav)" stroke-width="1.3"/><path d="M8 1.4a6.6 6.6 0 0 0 0 13.2z" fill="var(--lav)" opacity=".5"/></svg>Лютеиновая · день 24</span></div>
-  </div>
-
-  <div class="sec">Активность</div>
-  <div class="card">
-    <div class="mrow"><span class="mtxt" style="color:var(--lav);opacity:.85">Шаги сегодня</span><span class="steps">6 240<small>шаг.</small></span></div>
-    <div class="batt">
-      <div class="chk on"><span class="box">✓</span><span class="lb">Прогулка</span></div>
-      <div class="chk on"><span class="box">✓</span><span class="lb">Лестница</span></div>
-      <div class="chk"><span class="box">✓</span><span class="lb">Спорт</span></div>
-      <div class="chk"><span class="box">✓</span><span class="lb">Танцы</span></div>
-    </div>
-  </div>
-
-  <div class="sec">Забота о батарейке</div>
-  <div class="card">
-    <div class="batt" style="margin-top:0">
-      <div class="chk on"><span class="box">✓</span><span class="lb">Медитация</span></div>
-      <div class="chk"><span class="box">✓</span><span class="lb">Книга</span></div>
-      <div class="chk on"><span class="box">✓</span><span class="lb">Музыка</span></div>
-      <div class="chk"><span class="box">✓</span><span class="lb">Вкусная еда</span></div>
-      <div class="chk"><span class="box">✓</span><span class="lb">Сон до 00</span></div>
-      <div class="chk"><span class="box">✓</span><span class="lb">Энергодуш</span></div>
-      <div class="chk"><span class="box">✓</span><span class="lb">Выгрузка эмоций</span></div>
-    </div>
-  </div>
-
-  <div class="sec">Мой прогресс</div>
-  <div class="counters">
-    <div class="ctr">
-      <div class="ring">
-        <svg viewBox="0 0 100 100">
-          <circle class="trk" cx="50" cy="50" r="43"/>
-          <circle class="prg" cx="50" cy="50" r="43" stroke-dasharray="270.2" stroke-dashoffset="129.5" transform="rotate(-90 50 50)"/>
-        </svg>
-        <div class="rc"><div class="rn">25</div><div class="ru">недель уже</div></div>
-      </div>
-      <div class="rlab">Упая<span class="rt">2-й цикл из 3</span></div>
-    </div>
-    <div class="ctr">
-      <div class="ring">
-        <svg viewBox="0 0 100 100">
-          <circle class="trk" cx="50" cy="50" r="43"/>
-          <circle class="prg" cx="50" cy="50" r="43" stroke-dasharray="270.2" stroke-dashoffset="261.3" transform="rotate(-90 50 50)"/>
-        </svg>
-        <div class="rc"><div class="rn">882</div><div class="ru">дней ещё</div></div>
-      </div>
-      <div class="rlab">Элайнеры<span class="rt">красивая улыбка через ~2,4 года</span></div>
-    </div>
-  </div>
-
-  <div class="sec">Какой получился день</div>
-  <div class="card jar">
-    <div class="jrow"><i class="jm">✦</i><span class="jtx">Фортепиано — час для себя</span></div>
-    <div class="jrow"><i class="jm">✦</i><span class="jtx">Собрали «Мастерскую» и «Фокус» в аппе</span></div>
-    <div class="jrow"><i class="jm">✦</i><span class="jtx">Разобрались с механизмом планирования недели</span></div>
-    <div class="jrow"><i class="jm">✦</i><span class="jtx">Немного почитала</span></div>
-    <div class="jrow"><i class="jm">✦</i><span class="jtx">Выдохнула днём, без гонки</span></div>
-  </div>
-
-  <div class="sec">Инсайты дня</div>
-  <div class="card jar ins">
-    <div class="jrow"><i class="jm">✦</i><span class="jtx">Моё «крутое» — это идентичность, а не перфекционизм</span></div>
-    <div class="jrow"><i class="jm">✦</i><span class="jtx">Тихий день — тоже забота о себе, а не пустота</span></div>
+  <div class="card" style="background:linear-gradient(135deg,#2a1040,#1a0a35)">
+    <div class="card-hdr"><span class="card-ico">✨</span><span class="card-ttl">Аффирмации</span></div>
+    <div class="card-body"><div class="aff">✨ Я выбираю по теплу своего сердца, а не по чужим ожиданиям.</div><div class="aff">✨ Мир хочет меня порадовать — и я разрешаю себе принимать.</div><div class="aff">✨ Мне не нужно быть удобной, чтобы быть любимой.</div></div>
   </div>
 </div>
+
+<!-- WEEK -->
+<div id="tab-week" class="tab-content">
+<div class="wday">
+  <div class="wday-hdr">
+    <span class="wday-name">Пн</span>
+    <span class="wday-date">06.07</span>
+  </div>
+  <div class="wbar-wrap">
+    <div class="wtick" style="left:6.2%"><span>8</span></div><div class="wtick" style="left:18.8%"><span>10</span></div><div class="wtick" style="left:31.2%"><span>12</span></div><div class="wtick" style="left:43.8%"><span>14</span></div><div class="wtick" style="left:56.2%"><span>16</span></div><div class="wtick" style="left:68.8%"><span>18</span></div><div class="wtick" style="left:81.2%"><span>20</span></div><div class="wtick" style="left:93.8%"><span>22</span></div>
+    <div class="wseg" title="подъём/нейропрог" style="left:6.2%;width:3.1%;background:#ffb74d"></div>
+<div class="wseg" title="ритуал" style="left:9.4%;width:3.1%;background:#ffb74d"></div>
+<div class="wseg" title="собаки" style="left:18.8%;width:6.2%;background:#4caf7d"></div>
+<div class="wseg" title="🏃 лёгкая физнагрузка (движение дня)" style="left:25.0%;width:3.1%;background:#9898c8"></div>
+<div class="wseg" title="ПСИХОЛОГ" style="left:34.4%;width:6.2%;background:#4dd0e1"></div>
+<div class="wseg" title="отдых" style="left:43.8%;width:9.4%;background:#9090b0"></div>
+<div class="wseg" title="ПЕДИКЮР + ВОЛОСЫ 💅 + параллельно 💻 НАША РАБОТА с Оливкой (по состоянию)" style="left:56.2%;width:25.0%;background:#9898c8"></div>
+<div class="wseg" title="собаки" style="left:96.9%;width:3.1%;background:#4caf7d"></div>
+
+  </div>
+  <div class="wchips"><span class="wchip" style="border-color:#ffb74d;color:#ffb74d">08:00 подъём/нейропрог</span><span class="wchip" style="border-color:#ffb74d;color:#ffb74d">08:30 ритуал</span><span class="wchip" style="border-color:#4caf7d;color:#4caf7d">10:00 собаки</span><span class="wchip" style="border-color:#9898c8;color:#9898c8">11:00 🏃 лёгкая физнагрузка (движение дня)</span><span class="wchip" style="border-color:#4dd0e1;color:#4dd0e1">12:30 ПСИХОЛОГ</span><span class="wchip" style="border-color:#9090b0;color:#9090b0">14:00 отдых</span><span class="wchip" style="border-color:#9898c8;color:#9898c8">16:00 ПЕДИКЮР + ВОЛОСЫ 💅 + параллельно 💻 НАША РАБОТА с Оливкой (по состоянию)</span><span class="wchip" style="border-color:#4caf7d;color:#4caf7d">22:30 собаки</span></div>
+</div>
+<div class="wday">
+  <div class="wday-hdr">
+    <span class="wday-name">Вт</span>
+    <span class="wday-date">07.07</span>
+  </div>
+  <div class="wbar-wrap">
+    <div class="wtick" style="left:6.2%"><span>8</span></div><div class="wtick" style="left:18.8%"><span>10</span></div><div class="wtick" style="left:31.2%"><span>12</span></div><div class="wtick" style="left:43.8%"><span>14</span></div><div class="wtick" style="left:56.2%"><span>16</span></div><div class="wtick" style="left:68.8%"><span>18</span></div><div class="wtick" style="left:81.2%"><span>20</span></div><div class="wtick" style="left:93.8%"><span>22</span></div>
+    <div class="wseg" title="подъём" style="left:6.2%;width:3.1%;background:#f06292"></div>
+<div class="wseg" title="ритуал" style="left:9.4%;width:3.1%;background:#ffb74d"></div>
+<div class="wseg" title="собаки (стандарт; последнее утро с ними)" style="left:18.8%;width:6.2%;background:#4caf7d"></div>
+<div class="wseg" title="🟢 НАША РАБОТА (Ядро/проект)" style="left:25.0%;width:12.5%;background:#7986cb"></div>
+<div class="wseg" title="МУЗЫКА" style="left:37.5%;width:6.2%;background:#9898c8"></div>
+<div class="wseg" title="ОТВЕЗТИ СОБАК к подруге (на всю неделю)" style="left:46.9%;width:6.2%;background:#9898c8"></div>
+<div class="wseg" title="🟢 НАША РАБОТА (продолжаем)" style="left:53.1%;width:28.1%;background:#9898c8"></div>
+
+  </div>
+  <div class="wchips"><span class="wchip" style="border-color:#f06292;color:#f06292">08:00 подъём</span><span class="wchip" style="border-color:#ffb74d;color:#ffb74d">08:30 ритуал</span><span class="wchip" style="border-color:#4caf7d;color:#4caf7d">10:00 собаки (стандарт; последнее утро с ними)</span><span class="wchip" style="border-color:#7986cb;color:#7986cb">11:00 🟢 НАША РАБОТА (Ядро/проект)</span><span class="wchip" style="border-color:#9898c8;color:#9898c8">13:00 МУЗЫКА</span><span class="wchip" style="border-color:#9898c8;color:#9898c8">14:30 ОТВЕЗТИ СОБАК к подруге (на всю неделю)</span><span class="wchip" style="border-color:#9898c8;color:#9898c8">15:30 🟢 НАША РАБОТА (продолжаем)</span></div>
+</div>
+<div class="wday">
+  <div class="wday-hdr">
+    <span class="wday-name">Ср</span>
+    <span class="wday-date">08.07</span>
+  </div>
+  <div class="wbar-wrap">
+    <div class="wtick" style="left:6.2%"><span>8</span></div><div class="wtick" style="left:18.8%"><span>10</span></div><div class="wtick" style="left:31.2%"><span>12</span></div><div class="wtick" style="left:43.8%"><span>14</span></div><div class="wtick" style="left:56.2%"><span>16</span></div><div class="wtick" style="left:68.8%"><span>18</span></div><div class="wtick" style="left:81.2%"><span>20</span></div><div class="wtick" style="left:93.8%"><span>22</span></div>
+    
+  </div>
+  <div class="wchips"></div>
+</div>
+<div class="wday">
+  <div class="wday-hdr">
+    <span class="wday-name">Чт</span>
+    <span class="wday-date">09.07</span>
+  </div>
+  <div class="wbar-wrap">
+    <div class="wtick" style="left:6.2%"><span>8</span></div><div class="wtick" style="left:18.8%"><span>10</span></div><div class="wtick" style="left:31.2%"><span>12</span></div><div class="wtick" style="left:43.8%"><span>14</span></div><div class="wtick" style="left:56.2%"><span>16</span></div><div class="wtick" style="left:68.8%"><span>18</span></div><div class="wtick" style="left:81.2%"><span>20</span></div><div class="wtick" style="left:93.8%"><span>22</span></div>
+    
+  </div>
+  <div class="wchips"></div>
+</div>
+<div class="wday wday-today">
+  <div class="wday-hdr">
+    <span class="wday-name">Пт</span>
+    <span class="wday-date">10.07</span>
+  </div>
+  <div class="wbar-wrap">
+    <div class="wtick" style="left:6.2%"><span>8</span></div><div class="wtick" style="left:18.8%"><span>10</span></div><div class="wtick" style="left:31.2%"><span>12</span></div><div class="wtick" style="left:43.8%"><span>14</span></div><div class="wtick" style="left:56.2%"><span>16</span></div><div class="wtick" style="left:68.8%"><span>18</span></div><div class="wtick" style="left:81.2%"><span>20</span></div><div class="wtick" style="left:93.8%"><span>22</span></div>
+    <div class="wseg" title="ВЫПИСКА, домой. Работа — возможно, только по самочувствию (скорее нет). Дом, отдых, восстановление." style="left:31.2%;width:3.1%;background:#9090b0"></div>
+
+  </div>
+  <div class="wchips"><span class="wchip" style="border-color:#9090b0;color:#9090b0">12:00 ВЫПИСКА, домой. Работа — возможно, только по самочувствию (скорее нет). Дом, отдых, восстановление.</span></div>
+</div>
+<div class="wday">
+  <div class="wday-hdr">
+    <span class="wday-name">Сб</span>
+    <span class="wday-date">11.07</span>
+  </div>
+  <div class="wbar-wrap">
+    <div class="wtick" style="left:6.2%"><span>8</span></div><div class="wtick" style="left:18.8%"><span>10</span></div><div class="wtick" style="left:31.2%"><span>12</span></div><div class="wtick" style="left:43.8%"><span>14</span></div><div class="wtick" style="left:56.2%"><span>16</span></div><div class="wtick" style="left:68.8%"><span>18</span></div><div class="wtick" style="left:81.2%"><span>20</span></div><div class="wtick" style="left:93.8%"><span>22</span></div>
+    
+  </div>
+  <div class="wchips"></div>
+</div>
+<div class="wday">
+  <div class="wday-hdr">
+    <span class="wday-name">Вс</span>
+    <span class="wday-date">12.07</span>
+  </div>
+  <div class="wbar-wrap">
+    <div class="wtick" style="left:6.2%"><span>8</span></div><div class="wtick" style="left:18.8%"><span>10</span></div><div class="wtick" style="left:31.2%"><span>12</span></div><div class="wtick" style="left:43.8%"><span>14</span></div><div class="wtick" style="left:56.2%"><span>16</span></div><div class="wtick" style="left:68.8%"><span>18</span></div><div class="wtick" style="left:81.2%"><span>20</span></div><div class="wtick" style="left:93.8%"><span>22</span></div>
+    
+  </div>
+  <div class="wchips"></div>
+</div>
+
+</div>
+
+<!-- FORECAST -->
+<div id="tab-forecast" class="tab-content">
+  <div class="card" style="background:linear-gradient(135deg,#1a1040,#0d1f4a)">
+    <div class="card-hdr"><span class="card-ico">🌙</span><span class="card-ttl">Луна</span></div>
+    <div class="card-body"><p>Сегодня Полнолуние 🌕 в Водолее — пик, кульминация, когда всё внутри звучит громче обычного.<br>Лунный день по времени:<br><ul><li>до 21:55 — 17-й лунный день, Колокол 🔔. День радости, праздника, удовольствия — прямо разрешение себе на лёгкость и красоту.</li><li>с 21:55 — 18-й лунный день, Зеркало 🪞. Вечер про честность с собой, разоблачение иллюзий — хорошо к ночи задать себе тихий искренний вопрос.</li></ul></p></div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,#2a0d4a,#1a0d35)">
+    <div class="card-hdr"><span class="card-ico">🔢</span><span class="card-ttl">Аркан дня</span></div>
+    <div class="card-body"><p>Аркан любви, гармонии и выбора сердцем. Сегодня энергия про то, чтобы делать то, что откликается, а не то, что «надо» и «чтоб всем угодить». Это день приятных контактов, флирта с жизнью, вдохновения, творчества и красоты — того самого, где хобби и радость однажды становятся любимым делом.<br>Тень аркана — жить по чужому сценарию и всем нравиться. Так что твой ключ на сегодня: выбирай по своему теплу, а не по чужим ожиданиям.</p></div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,#0d2240,#0a1a35)">
+    <div class="card-hdr"><span class="card-ico">🪐</span><span class="card-ttl">Планеты</span></div>
+    <div class="card-body"><p>Юпитер — трин к твоей Венере (почти точный). Самый нежный транзит дня: период романтики, удовольствия и лёгких денег. Мир будто хочет тебя порадовать — позволь себе принимать красивое, вкусное, приятное. Твоя ценность и притягательность сейчас на подъёме.<br>Сатурн — секстиль к твоему Юпитеру (идеально точный, орб 0.1°): редкий момент, когда рост и опора идут рука об руку — можно спокойно, без надрыва, заложить что-то прочное, и это удержится.<br>А Луна в квадрате к Марсу может подкинуть лёгкую искру раздражения — это просто фон Полнолуния, не сигнал. Заметила — выдохни, подвигайся, отпусти.</p></div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,#1a2a1a,#0d1f30)">
+    <div class="card-hdr"><span class="card-ico">💼</span><span class="card-ttl">Фокус по соляру</span></div>
+    <div class="card-body"><p>Твой год — про бережную заботу о себе, тело и мягкий режим, и про то, чтобы не тащить всё на себе и не угождать в ущерб себе. Сегодня это ложится идеально: и аркан Влюблённых, и Венера просят выбирать себя. Разреши себе не быть удобной — быть живой.</p></div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,#1f1a3a,#140d2a)">
+    <div class="card-hdr"><span class="card-ico">🎯</span><span class="card-ttl">Рекомендации</span></div>
+    <div class="card-body"><p><ul><li>Сегодня — день удовольствия по-настоящему, а не по остаточному принципу. Впиши в него что-то, от чего сердце теплеет: красивый кофе, музыку, прогулку с Честером и Оливией без спешки.</li><li>Работу бери ту, что зажигает — Венера и аркан 6 дают творческому потоку зелёный свет. Пусть дело будет играючи.</li><li>Тело и красота в фокусе сезона: что-то приятное для себя — ванна, уход, вкусная еда — сегодня это не баловство, а по адресу.</li><li>К вечеру, с приходом Зеркала, задай себе тихий честный вопрос: что из сегодняшнего было по-настоящему моим? Без оценок, просто послушай отклик.</li></ul></p></div>
+  </div>
+  <div class="card" style="background:linear-gradient(135deg,#2a1040,#1a0a35)">
+    <div class="card-hdr"><span class="card-ico">✨</span><span class="card-ttl">Аффирмации</span></div>
+    <div class="card-body"><div class="aff">✨ Я выбираю по теплу своего сердца, а не по чужим ожиданиям.</div><div class="aff">✨ Мир хочет меня порадовать — и я разрешаю себе принимать.</div><div class="aff">✨ Мне не нужно быть удобной, чтобы быть любимой.</div></div>
+  </div>
+</div>
+
+<div class="footer">
+  🔭 Астрологические расчёты: Мари Афонина · Клабс<br>
+  Обновляется каждое утро автоматически
+</div>
+
 <script>
-const star=(cx,cy)=>{const s=3.4;return `M${cx} ${cy-s}L${cx+1} ${cy-1}L${cx+s} ${cy}L${cx+1} ${cy+1}L${cx} ${cy+s}L${cx-1} ${cy+1}L${cx-s} ${cy}L${cx-1} ${cy-1}Z`;};
-const w=(i)=>`<svg class="f" viewBox="0 0 40 40"><circle class="o" cx="20" cy="20" r="15"/>${i}</svg>`;
-const dot='<circle cx="14.5" cy="18" r="1.3"/><circle cx="25.5" cy="18" r="1.3"/>';
-const M=[['подъём радости',w(`<path class="st" d="${star(14.5,17.5)}"/><path class="st" d="${star(25.5,17.5)}"/><g class="ft"><path d="M11.5 22.5q8.5 7.5 17 0"/></g>`)],
-['тепло на душе',w('<g class="ft"><path d="M12 18.7q2.5 2 5 0"/><path d="M23 18.7q2.5 2 5 0"/><path d="M13.5 23.5q6.5 4.5 13 0"/></g>')],
-['спокойно',w('<g class="ft">'+dot+'<path d="M14 25h12"/></g>')],
-['слегка грустно',w('<g class="ft">'+dot+'<path d="M14 26q6-2.5 12 0"/></g>')],
-['совсем грустно',w('<g class="ft">'+dot+'<path d="M13.5 27q6.5-5.5 13 0"/></g>')]];
-const sel=0;
-document.getElementById('moods').innerHTML=M.map((m,i)=>`<button class="m ${i===sel?'on':''}" title="${m[0]}">${m[1]}</button>`).join('');
-document.getElementById('mcap').textContent=M[sel][0];
-document.querySelectorAll('.chk').forEach(b=>b.addEventListener('click',()=>b.classList.toggle('on')));
+function showTab(name,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  el.classList.add('active');
+}
+if(window.Telegram&&window.Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}
 </script>
-</body></html>
+</body>
+</html>
