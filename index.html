@@ -251,10 +251,11 @@ const isoT=T.getFullYear()+'-'+String(T.getMonth()+1).padStart(2,'0')+'-'+String
 /* дата */
 document.getElementById('dateTag').textContent=WD[T.getDay()]+' · '+T.getDate()+' '+MON[T.getMonth()];
 
-/* фаза цикла */
-(function(){const c=CFG.cycle;let d=daysB(d0(c.last),T)%c.avg;if(d<0)d+=c.avg;d+=1;const ov=c.avg-14;
+/* фаза цикла — счёт ПРОДОЛЖАЕТСЯ от последних подтверждённых месячных, НЕ сбрасывается по среднему сам */
+function renderCycle(last,avg){let d=daysB(d0(last),T)+1;const ov=avg-14;
  let ph=d<=5?'Менструальная':d<ov?'Фолликулярная':d<=ov+1?'Овуляция':'Лютеиновая';
- document.getElementById('cycleTxt').textContent=ph+' · день '+d;})();
+ document.getElementById('cycleTxt').textContent=ph+' · день '+d;}
+renderCycle(CFG.cycle.last,CFG.cycle.avg);
 
 /* кольца */
 const RC=2*Math.PI*43;
@@ -292,15 +293,23 @@ applyAll();
 /* если есть облако Telegram — подтянуть оттуда */
 try{if(tg&&tg.CloudStorage)tg.CloudStorage.getItem(KEY,(err,val)=>{if(!err&&val){try{S=JSON.parse(val);applyAll();}catch(e){}}});}catch(e){}
 
-/* ==== контент от Оливки (data.json) — если есть, переопределяет тексты ==== */
-fetch('data.json?v='+Date.now()).then(r=>r.ok?r.json():null).then(D=>{if(!D)return;
- if(D.tone){document.getElementById('toneQ').textContent=D.tone.title||'';document.getElementById('toneS').textContent=D.tone.sub||'';}
- if(D.affirmations&&D.affirmations.length)document.getElementById('affs').innerHTML=D.affirmations.map(a=>`<div class="aff">${a}</div>`).join('');
- if(D.wellbeing)document.getElementById('wellVal').textContent=D.wellbeing;
- if(D.steps!=null)document.getElementById('stepsVal').innerHTML=D.steps+' <small>шаг.</small>';
- if(D.jar&&D.jar.length)document.getElementById('jar').innerHTML=D.jar.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${t}</span></div>`).join('');
- if(D.insights&&D.insights.length)document.getElementById('insights').innerHTML=D.insights.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${t}</span></div>`).join('');
-}).catch(e=>{});
+/* ==== контент от Оливки (data.json). ПРАВИЛО: нет данных → честная заглушка, НЕ старьё ==== */
+function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function emptyBox(t){return `<div style="padding:8px 2px;color:var(--lav);opacity:.45;font-size:13px;font-style:italic">${t}</div>`;}
+function renderContent(D){D=D||{};
+ var tq=document.getElementById('toneQ'),ts=document.getElementById('toneS');
+ if(D.tone&&D.tone.title){tq.textContent=D.tone.title;tq.style.opacity='';ts.textContent=D.tone.sub||'';}
+ else{tq.textContent='прогноз дня ещё не пришёл';tq.style.opacity='.5';ts.textContent='';}
+ document.getElementById('affs').innerHTML=(D.affirmations&&D.affirmations.length)?D.affirmations.map(a=>`<div class="aff">${esc(a)}</div>`).join(''):emptyBox('Оливка ещё не прислала аффирмации');
+ document.getElementById('wellVal').textContent=D.wellbeing||'—';
+ document.getElementById('stepsVal').innerHTML=(D.steps!=null?D.steps:'—')+' <small>шаг.</small>';
+ if(D.cycle&&D.cycle.last)renderCycle(D.cycle.last,D.cycle.avg||CFG.cycle.avg);
+ document.getElementById('anchors').innerHTML=(D.anchors&&D.anchors.length)?D.anchors.map((g,gi)=>`<div class="day${gi===0?' first':''}"><span class="wd">${esc(g.wd)}</span><span class="dd">${esc(g.dd)}</span></div>`+(g.rows||[]).map(r=>`<div class="prow"><span class="ev">${esc(r.ev)}</span><span class="tm">${esc(r.tm)}</span></div>`).join('')).join(''):emptyBox('Запиши события недели — покажу здесь');
+ document.getElementById('focus').innerHTML=(D.focus&&D.focus.length)?D.focus.map(f=>`<div class="frow"><span class="txt">${esc(f.txt)}</span>${f.dl?`<span class="dl">${esc(f.dl)}</span>`:''}</div>`).join(''):emptyBox('Определим фокус на неделю с Оливкой');
+ document.getElementById('jar').innerHTML=(D.jar&&D.jar.length)?D.jar.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox('День ещё идёт — соберётся к вечеру');
+ document.getElementById('insights').innerHTML=(D.insights&&D.insights.length)?D.insights.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox('Появятся из наших сессий');
+}
+fetch('data.json?v='+Date.now()).then(r=>r.ok?r.json():null).then(renderContent).catch(function(){renderContent({});});
 
 /* ==== навигация по вкладкам ==== */
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
