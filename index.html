@@ -201,7 +201,7 @@ h1{font-family:'Playfair Display';font-style:italic;font-weight:600;font-size:42
     </div>
   </div>
 
-  <div class="sec">Какой получился день</div>
+  <div class="sec">Мои победы</div>
   <div class="card jar" id="jar">
     <div class="jrow"><i class="jm">✦</i><span class="jtx">Фортепиано — час для себя</span></div>
     <div class="jrow"><i class="jm">✦</i><span class="jtx">Собрали «Мастерскую» и «Фокус» в аппе</span></div>
@@ -307,7 +307,7 @@ function renderContent(D){D=D||{};
  document.getElementById('anchors').innerHTML=(D.anchors&&D.anchors.length)?D.anchors.map((g,gi)=>`<div class="day${gi===0?' first':''}"><span class="wd">${esc(g.wd)}</span><span class="dd">${esc(g.dd)}</span></div>`+(g.rows||[]).map(r=>`<div class="prow"><span class="ev">${esc(r.ev)}</span><span class="tm">${esc(r.tm)}</span></div>`).join('')).join(''):emptyBox('Запиши события недели — покажу здесь');
  document.getElementById('focus').innerHTML=(D.focus&&D.focus.length)?D.focus.map(f=>`<div class="frow"><span class="txt">${esc(f.txt)}</span>${f.dl?`<span class="dl">${esc(f.dl)}</span>`:''}</div>`).join(''):emptyBox('Определим фокус на неделю с Оливкой');
  document.getElementById('workshop').innerHTML=(D.workshop&&D.workshop.length)?D.workshop.map(function(w){var cls=w.done?'mrow done':(w.hot?'mrow hot':'mrow');var mk=w.hot?'':'<i class="mk"></i>';var gone=w.done?'<span class="gone">готово</span>':'';return '<div class="'+cls+'">'+mk+'<span class="mtxt">'+esc(w.txt)+'</span>'+gone+'</div>';}).join(''):emptyBox('Задачи мастерской появятся здесь');
- document.getElementById('jar').innerHTML=(D.jar&&D.jar.length)?D.jar.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox('День ещё идёт — соберётся к вечеру');
+ document.getElementById('jar').innerHTML=(D.jar&&D.jar.length)?D.jar.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox('Здесь копятся твои победы 🖤');
  document.getElementById('insights').innerHTML=(D.insights&&D.insights.length)?D.insights.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox(D.insights_note||'Сегодня без инсайтов — и это тоже нормально');
 }
 fetch('data.json?v='+Date.now()).then(r=>r.ok?r.json():null).then(renderContent).catch(function(){renderContent({});});
