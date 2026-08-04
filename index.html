@@ -310,7 +310,11 @@ function renderContent(D){D=D||{};
  document.getElementById('jar').innerHTML=(D.jar&&D.jar.length)?D.jar.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox('Здесь копятся твои победы 🖤');
  document.getElementById('insights').innerHTML=(D.insights&&D.insights.length)?D.insights.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox(D.insights_note||'Сегодня без инсайтов — и это тоже нормально');
 }
-fetch('data.json?v='+Date.now()).then(r=>r.ok?r.json():null).then(renderContent).catch(function(){renderContent({});});
+function loadData(){fetch('data.json?v='+Date.now()).then(r=>r.ok?r.json():null).then(renderContent).catch(function(){renderContent({});});}
+loadData();
+document.addEventListener('visibilitychange',function(){if(!document.hidden)loadData();});
+window.addEventListener('focus',loadData);
+try{if(typeof tg!=='undefined'&&tg&&tg.onEvent)tg.onEvent('activated',loadData);}catch(e){}
 
 /* ==== навигация по вкладкам ==== */
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
