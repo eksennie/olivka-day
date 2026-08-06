@@ -252,8 +252,10 @@ const isoT=T.getFullYear()+'-'+String(T.getMonth()+1).padStart(2,'0')+'-'+String
 document.getElementById('dateTag').textContent=WD[T.getDay()]+' · '+T.getDate()+' '+MON[T.getMonth()];
 
 /* фаза цикла — счёт ПРОДОЛЖАЕТСЯ от последних подтверждённых месячных, НЕ сбрасывается по среднему сам */
+let PHASE='',PHASE_D=0;
 function renderCycle(last,avg){let d=daysB(d0(last),T)+1;const ov=avg-14;
  let ph=d<=5?'Менструальная':d<ov?'Фолликулярная':d<=ov+1?'Овуляция':'Лютеиновая';
+ PHASE=ph;PHASE_D=d;
  document.getElementById('cycleTxt').textContent=ph+' · день '+d;}
 renderCycle(CFG.cycle.last,CFG.cycle.avg);
 
@@ -265,9 +267,23 @@ function setRing(id,prog){const el=document.getElementById(id);prog=Math.max(0,M
 (function(){const a=CFG.aligners;const total=Math.round(a.years*365.25);const el=daysB(d0(a.start),T);const left=Math.max(0,total-el);
  document.getElementById('alNum').textContent=left;setRing('alRing',el/total);})();
 
-/* ==== сохранение отметок (тап) — localStorage + Telegram CloudStorage ==== */
+/* ==== сохранение отметок (тап) — localStorage + Telegram CloudStorage + мост к Оливке ==== */
 const KEY='magia_'+isoT;
-function saveState(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}try{if(tg&&tg.CloudStorage)tg.CloudStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+/* тихий мост: дневной след уходит на сервер (для живой поддержки Оливки). Ошибки глотаем, аппе всё равно. */
+const BRIDGE='https://147-45-152-215.nip.io/state', BR_TOKEN='s7k2m9x4p1q8w3z6';
+let _brTimer=null;
+function sendState(){try{
+  const p=new URLSearchParams(); p.set('token',BR_TOKEN); p.set('date',isoT);
+  if(S.energy) p.set('e',S.energy);
+  if(S.mood!=null) p.set('m',S.mood);
+  if(PHASE) p.set('ph',PHASE);
+  if(PHASE_D) p.set('pd',PHASE_D);
+  if((S.act||[]).length) p.set('act',S.act.join(','));
+  if((S.care||[]).length) p.set('care',S.care.join(','));
+  fetch(BRIDGE+'?'+p.toString(),{mode:'cors',keepalive:true}).catch(()=>{});
+}catch(e){}}
+function queueSend(){clearTimeout(_brTimer);_brTimer=setTimeout(sendState,1200);}
+function saveState(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}try{if(tg&&tg.CloudStorage)tg.CloudStorage.setItem(KEY,JSON.stringify(S));}catch(e){}queueSend();}
 let S={};try{S=JSON.parse(localStorage.getItem(KEY)||'{}');}catch(e){S={};}
 
 /* энергия */
