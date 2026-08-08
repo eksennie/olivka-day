@@ -152,7 +152,7 @@ body{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}</style></he
   <div class="sec">Состояние</div>
   <div class="card">
     <div class="srow"><span class="sl">Самочувствие</span><span class="sv" id="wellVal">лёгкая усталость</span></div>
-    <div class="srow"><span class="sl">Фаза цикла</span><span class="sv"><svg class="moon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.6" fill="none" stroke="var(--lav)" stroke-width="1.3"/><path d="M8 1.4a6.6 6.6 0 0 0 0 13.2z" fill="var(--lav)" opacity=".5"/></svg><span id="cycleTxt">Лютеиновая · день 24</span></span></div>
+    <div class="srow"><span class="sl">Фаза цикла</span><span class="sv"><svg class="moon" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6.6" fill="none" stroke="var(--lav)" stroke-width="1.3"/><path d="M8 1.4a6.6 6.6 0 0 0 0 13.2z" fill="var(--lav)" opacity=".5"/></svg><span id="cycleTxt">—</span></span></div>
   </div>
 
   <div class="sec">Активность</div>
@@ -259,7 +259,7 @@ function renderCycle(last,avg){let d=daysB(d0(last),T)+1;const ov=avg-14;
  let ph=d<=5?'Менструальная':d<ov?'Фолликулярная':d<=ov+1?'Овуляция':'Лютеиновая';
  PHASE=ph;PHASE_D=d;
  document.getElementById('cycleTxt').textContent=ph+' · день '+d;}
-renderCycle(CFG.cycle.last,CFG.cycle.avg);
+/* фаза цикла — ТОЛЬКО из свежих данных (data.json.cycle) в renderContent; без захардкоженного старья */
 
 /* кольца */
 const RC=2*Math.PI*43;
@@ -321,7 +321,7 @@ function renderContent(D){D=D||{};
  document.getElementById('affs').innerHTML=(D.affirmations&&D.affirmations.length)?D.affirmations.map(a=>`<div class="aff">${esc(a)}</div>`).join(''):emptyBox('Оливка ещё не прислала аффирмации');
  document.getElementById('wellVal').textContent=D.wellbeing||'—';
  document.getElementById('stepsVal').innerHTML=(D.steps!=null?D.steps:'—')+' <small>шаг.</small>';
- if(D.cycle&&D.cycle.last)renderCycle(D.cycle.last,D.cycle.avg||CFG.cycle.avg);
+ if(D.cycle&&D.cycle.last)renderCycle(D.cycle.last,D.cycle.avg||CFG.cycle.avg);else document.getElementById('cycleTxt').textContent='—';
  document.getElementById('anchors').innerHTML=(D.anchors&&D.anchors.length)?D.anchors.map(function(g,gi){var pp=String(g.dd||'').trim().split(' ');var pd=parseInt(pp[0],10),pm=MON.indexOf(pp[1]);var past=(!isNaN(pd)&&pm>=0)&&(new Date(T.getFullYear(),pm,pd)<T);var pc=past?' past':'';return '<div class="day'+(gi===0?' first':'')+pc+'"><span class="wd">'+esc(g.wd)+'</span><span class="dd">'+esc(g.dd)+'</span></div>'+(g.rows||[]).map(function(r){return '<div class="prow'+pc+'"><span class="ev">'+esc(r.ev)+'</span><span class="tm">'+esc(r.tm)+'</span></div>';}).join('');}).join(''):emptyBox('Запиши события недели — покажу здесь');
  document.getElementById('focus').innerHTML=(D.focus&&D.focus.length)?D.focus.map(f=>`<div class="frow"><span class="txt">${esc(f.txt)}</span>${f.dl?`<span class="dl">${esc(f.dl)}</span>`:''}</div>`).join(''):emptyBox('Определим фокус на неделю с Оливкой');
  document.getElementById('workshop').innerHTML=(D.workshop&&D.workshop.length)?D.workshop.map(function(w){var cls=w.done?'mrow done':(w.hot?'mrow hot':'mrow');var mk=w.hot?'':'<i class="mk"></i>';var gone=w.done?'<span class="gone">готово</span>':'';return '<div class="'+cls+'">'+mk+'<span class="mtxt">'+esc(w.txt)+'</span>'+gone+'</div>';}).join(''):emptyBox('Задачи мастерской появятся здесь');
