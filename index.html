@@ -33,6 +33,7 @@ h1{font-family:'Playfair Display';font-style:italic;font-weight:600;font-size:42
 .plaque .ps{font-size:13px;line-height:1.42;color:var(--lav);opacity:.82}.plaque .ps .tp{margin-top:5px}.plaque .ps .tp:first-child{margin-top:0}
 .card{background:var(--card);border-radius:18px;padding:16px 17px;border:1px solid rgba(218,182,94,.18)}
 .day{display:flex;align-items:baseline;gap:9px;margin:26px 0 10px}.day .wd{font-family:'Tenor Sans';font-size:13px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold)}.day .dd{font-family:'Tenor Sans';font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--lav);opacity:.5}
+.day.past{opacity:.4}.prow.past{opacity:.4}
 .day.first{margin-top:2px}
 .prow{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(198,159,213,.1)}
 .prow:last-child{border:none}
@@ -321,7 +322,7 @@ function renderContent(D){D=D||{};
  document.getElementById('wellVal').textContent=D.wellbeing||'—';
  document.getElementById('stepsVal').innerHTML=(D.steps!=null?D.steps:'—')+' <small>шаг.</small>';
  if(D.cycle&&D.cycle.last)renderCycle(D.cycle.last,D.cycle.avg||CFG.cycle.avg);
- document.getElementById('anchors').innerHTML=(D.anchors&&D.anchors.length)?D.anchors.map((g,gi)=>`<div class="day${gi===0?' first':''}"><span class="wd">${esc(g.wd)}</span><span class="dd">${esc(g.dd)}</span></div>`+(g.rows||[]).map(r=>`<div class="prow"><span class="ev">${esc(r.ev)}</span><span class="tm">${esc(r.tm)}</span></div>`).join('')).join(''):emptyBox('Запиши события недели — покажу здесь');
+ document.getElementById('anchors').innerHTML=(D.anchors&&D.anchors.length)?D.anchors.map(function(g,gi){var pp=String(g.dd||'').trim().split(' ');var pd=parseInt(pp[0],10),pm=MON.indexOf(pp[1]);var past=(!isNaN(pd)&&pm>=0)&&(new Date(T.getFullYear(),pm,pd)<T);var pc=past?' past':'';return '<div class="day'+(gi===0?' first':'')+pc+'"><span class="wd">'+esc(g.wd)+'</span><span class="dd">'+esc(g.dd)+'</span></div>'+(g.rows||[]).map(function(r){return '<div class="prow'+pc+'"><span class="ev">'+esc(r.ev)+'</span><span class="tm">'+esc(r.tm)+'</span></div>';}).join('');}).join(''):emptyBox('Запиши события недели — покажу здесь');
  document.getElementById('focus').innerHTML=(D.focus&&D.focus.length)?D.focus.map(f=>`<div class="frow"><span class="txt">${esc(f.txt)}</span>${f.dl?`<span class="dl">${esc(f.dl)}</span>`:''}</div>`).join(''):emptyBox('Определим фокус на неделю с Оливкой');
  document.getElementById('workshop').innerHTML=(D.workshop&&D.workshop.length)?D.workshop.map(function(w){var cls=w.done?'mrow done':(w.hot?'mrow hot':'mrow');var mk=w.hot?'':'<i class="mk"></i>';var gone=w.done?'<span class="gone">готово</span>':'';return '<div class="'+cls+'">'+mk+'<span class="mtxt">'+esc(w.txt)+'</span>'+gone+'</div>';}).join(''):emptyBox('Задачи мастерской появятся здесь');
  document.getElementById('jar').innerHTML=(D.jar&&D.jar.length)?D.jar.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox('Здесь копятся твои победы 🖤');
