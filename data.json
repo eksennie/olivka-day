@@ -121,5 +121,51 @@
       "name": "Таймвеб",
       "date": "2026-09-25"
     }
+  ],
+  "dogs": [
+    {
+      "name": "Честер",
+      "birth": "2019-05-25",
+      "care": {
+        "worms": {
+          "last": "2026-08-23",
+          "days": 90
+        },
+        "parasites": {
+          "last": "2026-07-31",
+          "days": 84
+        },
+        "vaccine": {
+          "last": "2025-09-01",
+          "days": 365
+        },
+        "checkup": {
+          "last": "2026-02-20",
+          "days": null
+        }
+      }
+    },
+    {
+      "name": "Оливия",
+      "birth": "2020-04-04",
+      "care": {
+        "worms": {
+          "last": "2026-06-24",
+          "days": 90
+        },
+        "parasites": {
+          "last": "2026-07-31",
+          "days": 84
+        },
+        "vaccine": {
+          "last": "2026-06-03",
+          "days": 365
+        },
+        "checkup": {
+          "last": "2026-05-18",
+          "days": null
+        }
+      }
+    }
   ]
 }
