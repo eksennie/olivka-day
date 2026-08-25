@@ -139,9 +139,6 @@ body{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}</style></he
     <div class="prow"><span class="ev">Танцы</span><span class="tm">19:00</span></div>
   </div>
 
-  <div class="sec">Списания</div>
-  <div class="card" id="subs"></div>
-
   <div class="sec">Фокус недели</div>
   <div class="card" id="focus">
     <div class="frow"><span class="txt">Довести мини-апп до защиты</span><span class="dl">до 3.08</span></div>
@@ -226,6 +223,8 @@ body{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}</style></he
     <div class="jrow"><i class="jm">✦</i><span class="jtx">Моё «крутое» — это идентичность, а не перфекционизм</span></div>
     <div class="jrow"><i class="jm">✦</i><span class="jtx">Тихий день — тоже забота о себе, а не пустота</span></div>
   </div>
+  <div class="sec">Списания</div>
+  <div class="card" id="subs"></div>
   </div><!-- /view-main -->
 
   <div class="pview" id="view-fin"><div class="soon"><div class="sic">✦</div><div class="st">Финансы</div><div class="ss">скоро — учёт расходов</div></div></div>
@@ -335,7 +334,7 @@ function renderContent(D){D=D||{};
  document.getElementById('anchors').innerHTML=(D.anchors&&D.anchors.length)?D.anchors.map(function(g,gi){var pp=String(g.dd||'').trim().split(' ');var pd=parseInt(pp[0],10),pm=MON.indexOf(pp[1]);var past=(!isNaN(pd)&&pm>=0)&&(new Date(T.getFullYear(),pm,pd)<T);var pc=past?' past':'';return '<div class="day'+(gi===0?' first':'')+pc+'"><span class="wd">'+esc(g.wd)+'</span><span class="dd">'+esc(g.dd)+'</span></div>'+(g.rows||[]).map(function(r){return '<div class="prow'+pc+'"><span class="ev">'+esc(r.ev)+'</span><span class="tm">'+esc(r.tm)+'</span></div>';}).join('');}).join(''):emptyBox('Запиши события недели — покажу здесь');
  var subEl=document.getElementById('subs');
  if(subEl){if(D.subscriptions&&D.subscriptions.length){
-   var _sr=D.subscriptions.map(function(s){var day=+s.day||1;var now=T.getDate();var when=new Date(T.getFullYear(),T.getMonth()+(day>=now?0:1),day);var du=daysB(T,when);return {s:s,when:when,du:du};}).sort(function(a,b){return a.du-b.du;});
+   var _sr=D.subscriptions.map(function(s){var when=s.date?d0(s.date):null;if(when){while(when<T){when.setMonth(when.getMonth()+1);}}var du=when?daysB(T,when):9999;return {s:s,when:when,du:du};}).filter(function(x){return x.when;}).sort(function(a,b){return a.du-b.du;});
    subEl.innerHTML=_sr.map(function(r){var lab=r.du===0?'сегодня':(r.du===1?'завтра':'через '+r.du+' дн');var dd=r.when.getDate()+' '+MON[r.when.getMonth()].slice(0,3);var soon=r.du<=3?' due':'';var amt=r.s.amount?'<span class="samt">'+esc(r.s.amount)+'</span>':'';return '<div class="subrow"><span class="snm">'+esc(r.s.name)+amt+'</span><span class="subpill'+soon+'">'+dd+' · '+lab+'</span></div>';}).join('');
  }else subEl.innerHTML=emptyBox('Добавь подписки — покажу, когда списания');}
  document.getElementById('focus').innerHTML=(D.focus&&D.focus.length)?D.focus.map(f=>`<div class="frow"><span class="txt">${esc(f.txt)}</span>${f.dl?`<span class="dl">${esc(f.dl)}</span>`:''}</div>`).join(''):emptyBox('Определим фокус на неделю с Оливкой');
