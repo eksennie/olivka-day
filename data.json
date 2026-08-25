@@ -99,5 +99,11 @@
       "txt": "Портрет Даши (PDF)",
       "done": true
     }
+  ],
+  "subscriptions": [
+    {
+      "name": "Интернет",
+      "day": 4
+    }
   ]
 }
