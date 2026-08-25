@@ -51,6 +51,11 @@ h1{font-family:'Playfair Display';font-style:italic;font-weight:600;font-size:42
 .subrow .samt{color:var(--gold);opacity:.6;font-size:11.5px;font-variant-numeric:tabular-nums}
 .subpill{font-family:'Tenor Sans';font-size:10px;letter-spacing:.4px;color:var(--gold);border:1px solid rgba(218,182,94,.45);border-radius:12px;padding:5px 11px;white-space:nowrap;flex:none}
 .subpill.due{color:var(--lem);border-color:rgba(218,182,94,.85);background:rgba(218,182,94,.14)}
+.subpill.over{color:#F0BFC0;border-color:rgba(226,140,140,.7);background:rgba(226,140,140,.13)}
+.doghdr{display:flex;align-items:baseline;gap:9px;margin:15px 0 5px;padding-top:13px;border-top:1px solid rgba(198,159,213,.12)}
+.doghdr.first{margin-top:0;padding-top:0;border-top:none}
+.doghdr .dn{font-family:'Tenor Sans';font-size:12.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.doghdr .da{font-family:'Tenor Sans';font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--lav);opacity:.55}
 .mrow{display:flex;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid rgba(198,159,213,.08);position:relative}
 .mrow:last-child{border:none}
 .mk{width:6px;height:6px;border-radius:50%;background:var(--lav);opacity:.5;flex:none;align-self:flex-start;margin-top:6px}
@@ -225,6 +230,8 @@ body{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}</style></he
   </div>
   <div class="sec">Подписки</div>
   <div class="card" id="subs"></div>
+  <div class="sec">Пушистые</div>
+  <div class="card" id="dogs"></div>
   </div><!-- /view-main -->
 
   <div class="pview" id="view-fin"><div class="soon"><div class="sic">✦</div><div class="st">Финансы</div><div class="ss">скоро — учёт расходов</div></div></div>
@@ -323,6 +330,7 @@ try{if(tg&&tg.CloudStorage)tg.CloudStorage.getItem(KEY,(err,val)=>{if(!err&&val)
 /* ==== контент от Оливки (data.json). ПРАВИЛО: нет данных → честная заглушка, НЕ старьё ==== */
 function esc(s){return String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 function emptyBox(t){return `<div style="padding:8px 2px;color:var(--lav);opacity:.45;font-size:13px;font-style:italic">${t}</div>`;}
+function plural(n,one,few,many){var a=n%10,b=n%100;if(a===1&&b!==11)return one;if(a>=2&&a<=4&&(b<10||b>=20))return few;return many;}
 function renderContent(D){D=D||{};
  var tq=document.getElementById('toneQ'),ts=document.getElementById('toneS');
  if(D.tone&&D.tone.title){tq.textContent=D.tone.title;tq.style.opacity='';ts.innerHTML=Array.isArray(D.tone.sub)?D.tone.sub.map(function(x){return '<div class="tp">'+esc(x)+'</div>';}).join(''):esc(D.tone.sub||'');}
@@ -337,6 +345,22 @@ function renderContent(D){D=D||{};
    var _sr=D.subscriptions.map(function(s){var when=s.date?d0(s.date):null;if(when){while(when<T){when.setMonth(when.getMonth()+1);}}var du=when?daysB(T,when):9999;return {s:s,when:when,du:du};}).filter(function(x){return x.when;}).sort(function(a,b){return a.du-b.du;});
    subEl.innerHTML=_sr.map(function(r){var lab=r.du===0?'сегодня':(r.du===1?'завтра':'через '+r.du+' дн');var dd=r.when.getDate()+' '+MON[r.when.getMonth()].slice(0,3);var soon=r.du<=3?' due':'';var amt=r.s.amount?'<span class="samt">'+esc(r.s.amount)+'</span>':'';return '<div class="subrow"><span class="snm">'+esc(r.s.name)+amt+'</span><span class="subpill'+soon+'">'+dd+' · '+lab+'</span></div>';}).join('');
  }else subEl.innerHTML=emptyBox('Добавь подписки — покажу, когда списания');}
+ var dogEl=document.getElementById('dogs');
+ if(dogEl){if(D.dogs&&D.dogs.length){
+   var CARE=[['worms','Глисты'],['parasites','Паразиты'],['vaccine','Прививка'],['checkup','Чек-ап']];
+   dogEl.innerHTML=D.dogs.map(function(dg,di){
+     var age=dg.birth?Math.floor(daysB(d0(dg.birth),T)/365.25):null;
+     var hdr='<div class="doghdr'+(di===0?' first':'')+'"><span class="dn">'+esc(dg.name)+'</span>'+(age!=null?'<span class="da">'+age+' '+plural(age,'год','года','лет')+'</span>':'')+'</div>';
+     var rows=CARE.map(function(ck){var c=(dg.care||{})[ck[0]];if(!c||!c.last)return '';var last=d0(c.last);
+       if(c.days){var next=new Date(last);next.setDate(next.getDate()+c.days);var du=daysB(T,next);var dd=next.getDate()+' '+MON[next.getMonth()].slice(0,3);var cls='',lab;
+         if(du<0){cls=' over';lab='просрочено '+(-du)+' дн';}else if(du===0){cls=' due';lab='сегодня';}else if(du<=14){cls=' due';lab='через '+du+' дн';}else{lab='через '+du+' дн';}
+         return '<div class="subrow"><span class="snm">'+ck[1]+'</span><span class="subpill'+cls+'">'+dd+' · '+lab+'</span></div>';}
+       else{var dd2=last.getDate()+' '+MON[last.getMonth()].slice(0,3)+' '+last.getFullYear();
+         return '<div class="subrow"><span class="snm">'+ck[1]+'</span><span class="subpill" style="border-style:dashed;opacity:.7">посл: '+dd2+'</span></div>';}
+     }).join('');
+     return hdr+rows;
+   }).join('');
+ }else dogEl.innerHTML=emptyBox('Добавь пушистых — покажу их даты 🐾');}
  document.getElementById('focus').innerHTML=(D.focus&&D.focus.length)?D.focus.map(f=>`<div class="frow"><span class="txt">${esc(f.txt)}</span>${f.dl?`<span class="dl">${esc(f.dl)}</span>`:''}</div>`).join(''):emptyBox('Определим фокус на неделю с Оливкой');
  document.getElementById('workshop').innerHTML=(D.workshop&&D.workshop.length)?D.workshop.map(function(w){var cls=w.done?'mrow done':(w.hot?'mrow hot':'mrow');var mk=w.hot?'':'<i class="mk"></i>';var gone=w.done?'<span class="gone">готово</span>':'';return '<div class="'+cls+'">'+mk+'<span class="mtxt">'+esc(w.txt)+'</span>'+gone+'</div>';}).join(''):emptyBox('Задачи мастерской появятся здесь');
  document.getElementById('jar').innerHTML=(D.jar&&D.jar.length)?D.jar.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox('Здесь копятся твои победы 🖤');
