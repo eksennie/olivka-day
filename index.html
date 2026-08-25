@@ -44,6 +44,13 @@ h1{font-family:'Playfair Display';font-style:italic;font-weight:600;font-size:42
 .frow .txt{display:flex;gap:10px;font-size:14px;color:#EAE3D8;line-height:1.4}
 .frow .txt::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);margin-top:6px;flex:none}
 .dl{font-family:'Tenor Sans';font-size:10px;letter-spacing:.5px;color:var(--gold);border:1px solid rgba(218,182,94,.45);border-radius:12px;padding:4px 10px;white-space:nowrap;flex:none;align-self:center}
+.subrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(198,159,213,.1)}
+.subrow:last-child{border:none}
+.subrow .snm{font-size:14px;color:#EAE3D8;display:flex;align-items:center;gap:10px;min-width:0}
+.subrow .snm::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);flex:none}
+.subrow .samt{color:var(--gold);opacity:.6;font-size:11.5px;font-variant-numeric:tabular-nums}
+.subpill{font-family:'Tenor Sans';font-size:10px;letter-spacing:.4px;color:var(--gold);border:1px solid rgba(218,182,94,.45);border-radius:12px;padding:5px 11px;white-space:nowrap;flex:none}
+.subpill.due{color:var(--lem);border-color:rgba(218,182,94,.85);background:rgba(218,182,94,.14)}
 .mrow{display:flex;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid rgba(198,159,213,.08);position:relative}
 .mrow:last-child{border:none}
 .mk{width:6px;height:6px;border-radius:50%;background:var(--lav);opacity:.5;flex:none;align-self:flex-start;margin-top:6px}
@@ -131,6 +138,9 @@ body{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}</style></he
     <div class="prow"><span class="ev">Эфир ЛАБС — защита работ</span><span class="tm">15:00</span></div>
     <div class="prow"><span class="ev">Танцы</span><span class="tm">19:00</span></div>
   </div>
+
+  <div class="sec">Списания</div>
+  <div class="card" id="subs"></div>
 
   <div class="sec">Фокус недели</div>
   <div class="card" id="focus">
@@ -323,6 +333,11 @@ function renderContent(D){D=D||{};
  document.getElementById('stepsVal').innerHTML=(D.steps!=null?D.steps:'—')+' <small>шаг.</small>';
  if(D.cycle&&D.cycle.last)renderCycle(D.cycle.last,D.cycle.avg||CFG.cycle.avg);else document.getElementById('cycleTxt').textContent='—';
  document.getElementById('anchors').innerHTML=(D.anchors&&D.anchors.length)?D.anchors.map(function(g,gi){var pp=String(g.dd||'').trim().split(' ');var pd=parseInt(pp[0],10),pm=MON.indexOf(pp[1]);var past=(!isNaN(pd)&&pm>=0)&&(new Date(T.getFullYear(),pm,pd)<T);var pc=past?' past':'';return '<div class="day'+(gi===0?' first':'')+pc+'"><span class="wd">'+esc(g.wd)+'</span><span class="dd">'+esc(g.dd)+'</span></div>'+(g.rows||[]).map(function(r){return '<div class="prow'+pc+'"><span class="ev">'+esc(r.ev)+'</span><span class="tm">'+esc(r.tm)+'</span></div>';}).join('');}).join(''):emptyBox('Запиши события недели — покажу здесь');
+ var subEl=document.getElementById('subs');
+ if(subEl){if(D.subscriptions&&D.subscriptions.length){
+   var _sr=D.subscriptions.map(function(s){var day=+s.day||1;var now=T.getDate();var when=new Date(T.getFullYear(),T.getMonth()+(day>=now?0:1),day);var du=daysB(T,when);return {s:s,when:when,du:du};}).sort(function(a,b){return a.du-b.du;});
+   subEl.innerHTML=_sr.map(function(r){var lab=r.du===0?'сегодня':(r.du===1?'завтра':'через '+r.du+' дн');var dd=r.when.getDate()+' '+MON[r.when.getMonth()].slice(0,3);var soon=r.du<=3?' due':'';var amt=r.s.amount?'<span class="samt">'+esc(r.s.amount)+'</span>':'';return '<div class="subrow"><span class="snm">'+esc(r.s.name)+amt+'</span><span class="subpill'+soon+'">'+dd+' · '+lab+'</span></div>';}).join('');
+ }else subEl.innerHTML=emptyBox('Добавь подписки — покажу, когда списания');}
  document.getElementById('focus').innerHTML=(D.focus&&D.focus.length)?D.focus.map(f=>`<div class="frow"><span class="txt">${esc(f.txt)}</span>${f.dl?`<span class="dl">${esc(f.dl)}</span>`:''}</div>`).join(''):emptyBox('Определим фокус на неделю с Оливкой');
  document.getElementById('workshop').innerHTML=(D.workshop&&D.workshop.length)?D.workshop.map(function(w){var cls=w.done?'mrow done':(w.hot?'mrow hot':'mrow');var mk=w.hot?'':'<i class="mk"></i>';var gone=w.done?'<span class="gone">готово</span>':'';return '<div class="'+cls+'">'+mk+'<span class="mtxt">'+esc(w.txt)+'</span>'+gone+'</div>';}).join(''):emptyBox('Задачи мастерской появятся здесь');
  document.getElementById('jar').innerHTML=(D.jar&&D.jar.length)?D.jar.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox('Здесь копятся твои победы 🖤');
