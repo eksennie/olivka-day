@@ -112,7 +112,34 @@ h1{font-family:'Playfair Display';font-style:italic;font-weight:600;font-size:42
 .tab{font-family:'Tenor Sans';font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);opacity:.5;position:relative;padding:4px 6px;cursor:pointer}
 .tab.on{color:var(--lem);opacity:1;text-shadow:0 0 12px rgba(253,253,201,.35)}
 .tab.on::after{content:"";position:absolute;left:50%;transform:translateX(-50%);bottom:-7px;width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(218,182,94,.65)}
-body{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}</style></head><body>
+body{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
+.pt-hi{font-family:'Playfair Display';font-style:italic;font-weight:600;font-size:15px;color:var(--gold);opacity:.85;line-height:1.35;display:block;margin:3px 0 2px}
+.pt-legend{background:var(--card);border:1px solid rgba(218,182,94,.14);border-radius:14px;padding:11px 13px;display:flex;flex-wrap:wrap;gap:8px 12px}
+.pt-li{display:flex;align-items:center;gap:7px;font-size:11px;color:#EAE3D8;opacity:.82}
+.pt-blk{background:var(--card);border:1px solid rgba(218,182,94,.18);border-radius:16px;padding:15px 15px 13px;margin-bottom:10px}
+.pt-eh{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.pt-en{font-family:'Tenor Sans';font-size:12.5px;letter-spacing:1px;text-transform:uppercase;color:var(--gold)}
+.pt-pill{margin-left:auto;font-family:'Tenor Sans';font-size:9.5px;letter-spacing:.5px;color:var(--gold);border:1px solid rgba(218,182,94,.45);border-radius:12px;padding:4px 9px;white-space:nowrap;flex:none}
+.pt-pill.hot{color:var(--lem);border-color:rgba(218,182,94,.85);background:rgba(218,182,94,.13)}
+.pt-tx{font-size:13.5px;line-height:1.5;color:#EAE3D8}
+.pt-tx b{font-weight:500;color:var(--gold)}
+.pt-asp{margin-top:11px;border-top:1px solid rgba(198,159,213,.12);padding-top:8px}
+.pt-arow{display:flex;gap:9px;align-items:flex-start;padding:5px 0}
+.pt-arow .pt-tx{font-size:13px}
+.pt-g{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid rgba(218,182,94,.4);color:var(--gold);font-size:11px;line-height:1;flex:none;margin-top:1px}
+.pt-moon{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--gold);flex:none}
+.pt-moon.full{background:var(--gold)}
+.pt-zod{color:var(--gold);opacity:.85;font-size:15px;line-height:1;font-family:'Tenor Sans';font-variant-emoji:text}
+.pt-row{padding:11px 0;border-bottom:1px solid rgba(198,159,213,.1)}
+.pt-row:first-child{padding-top:2px}
+.pt-row:last-child{border:none;padding-bottom:2px}
+.pt-row .pt-eh{margin-bottom:5px}
+.pt-support{background:linear-gradient(165deg,#251C34,#1F1729);border:1px solid rgba(218,182,94,.2);border-radius:16px;padding:14px 15px}
+.pt-srow{display:flex;gap:11px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(198,159,213,.08)}
+.pt-srow:last-child{border:none}
+.pt-srow:first-child{padding-top:2px}
+.pt-sm{color:var(--gold);font-size:11px;line-height:1.3;flex:none;margin-top:2px}
+.pt-sign{text-align:center;font-family:'Kalissa','Playfair Display';font-size:18px;color:var(--gold);opacity:.82;letter-spacing:.5px;margin-top:15px}</style></head><body>
 <div class="ph">
   <div class="pview on" id="view-main">
   <div class="tag" id="dateTag">Понедельник · 28 июля</div>
@@ -365,6 +392,24 @@ function renderContent(D){D=D||{};
  document.getElementById('workshop').innerHTML=(D.workshop&&D.workshop.length)?D.workshop.map(function(w){var cls=w.done?'mrow done':(w.hot?'mrow hot':'mrow');var mk=w.hot?'':'<i class="mk"></i>';var gone=w.done?'<span class="gone">готово</span>':'';return '<div class="'+cls+'">'+mk+'<span class="mtxt">'+esc(w.txt)+'</span>'+gone+'</div>';}).join(''):emptyBox('Задачи мастерской появятся здесь');
  document.getElementById('jar').innerHTML=(D.jar&&D.jar.length)?D.jar.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox('Здесь копятся твои победы 🖤');
  document.getElementById('insights').innerHTML=(D.insights&&D.insights.length)?D.insights.map(t=>`<div class="jrow"><i class="jm">✦</i><span class="jtx">${esc(t)}</span></div>`).join(''):emptyBox(D.insights_note||'Сегодня без инсайтов — и это тоже нормально');
+ renderPut(D.put);
+}
+function md(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');}
+function ptAsp(a){return (a||[]).map(function(x){return '<div class="pt-arow"><span class="pt-g">'+esc(x.g)+'</span><div class="pt-tx">'+md(x.t)+'</div></div>';}).join('');}
+function renderPut(P){
+ var el=document.getElementById('view-put'); if(!el) return;
+ if(!P||!P.month){el.innerHTML='<div class="soon"><div class="sic">✦</div><div class="st">Путь</div><div class="ss">прогноз месяца скоро появится</div></div>';return;}
+ var h='<div class="tag">Путь · астро-прогноз</div><h1>'+esc(P.month)+'</h1>';
+ if(P.sub) h+='<div class="pt-hi">'+esc(P.sub)+'</div>';
+ if(P.legend&&P.legend.length) h+='<div class="sec">Значки аспектов</div><div class="pt-legend">'+P.legend.map(function(l){return '<div class="pt-li"><span class="pt-g">'+esc(l.g)+'</span> '+esc(l.t)+'</div>';}).join('')+'</div>';
+ if(P.lunar&&P.lunar.length) h+='<div class="sec">Лунные события</div>'+P.lunar.map(function(e){return '<div class="pt-blk"><div class="pt-eh"><span class="pt-moon'+(e.phase==='full'?' full':'')+'"></span><span class="pt-en">'+esc(e.name)+'</span>'+(e.zod?'<span class="pt-zod">'+esc(e.zod)+'</span>':'')+'<span class="pt-pill">'+esc(e.date)+'</span></div><div class="pt-tx">'+md(e.text)+'</div>'+(e.asp&&e.asp.length?'<div class="pt-asp">'+ptAsp(e.asp)+'</div>':'')+'</div>';}).join('');
+ if(P.windows&&P.windows.length) h+='<div class="sec">Ключевые окна</div>'+P.windows.map(function(e){return '<div class="pt-blk"><div class="pt-eh"><span class="pt-en">'+esc(e.name)+'</span><span class="pt-pill'+(e.hot?' hot':'')+'">'+esc(e.date)+'</span></div><div class="pt-tx">'+md(e.text)+'</div>'+(e.asp&&e.asp.length?'<div class="pt-asp">'+ptAsp(e.asp)+'</div>':'')+'</div>';}).join('');
+ if(P.weather&&P.weather.length) h+='<div class="sec">Смены погоды</div><div class="pt-blk">'+P.weather.map(function(e){return '<div class="pt-row"><div class="pt-eh"><span class="pt-en">'+esc(e.name)+'</span><span class="pt-pill">'+esc(e.date)+'</span></div><div class="pt-tx">'+md(e.text)+'</div></div>';}).join('')+'</div>';
+ if(P.background&&P.background.length) h+='<div class="sec">Медленный фон · тон месяцев</div><div class="pt-blk">'+P.background.map(function(e){return '<div class="pt-row"><div class="pt-eh">'+(e.g?'<span class="pt-g">'+esc(e.g)+'</span>':'')+'<span class="pt-en">'+esc(e.name)+'</span><span class="pt-pill">'+esc(e.date)+'</span></div><div class="pt-tx">'+md(e.text)+'</div></div>';}).join('')+'</div>';
+ if(P.year&&P.year.length) h+='<div class="sec">Глава года</div><div class="pt-blk">'+P.year.map(function(e){return '<div class="pt-row"><div class="pt-eh"><span class="pt-en">'+esc(e.name)+'</span>'+(e.date?'<span class="pt-pill">'+esc(e.date)+'</span>':'')+'</div><div class="pt-tx">'+md(e.text)+'</div></div>';}).join('')+'</div>';
+ if(P.support&&P.support.length) h+='<div class="sec">Опоры месяца</div><div class="pt-support">'+P.support.map(function(s){return '<div class="pt-srow"><span class="pt-sm">✦</span><div class="pt-tx">'+md(s)+'</div></div>';}).join('')+'</div>';
+ h+='<div class="pt-sign">собрано с любовью · Оливка</div>';
+ el.innerHTML=h;
 }
 function loadData(){fetch('data.json?v='+Date.now()).then(r=>r.ok?r.json():null).then(renderContent).catch(function(){renderContent({});});}
 loadData();
